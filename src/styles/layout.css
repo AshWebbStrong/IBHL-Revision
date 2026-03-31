@@ -1,0 +1,189 @@
+.page {
+  min-height: 100vh;
+  position: relative;
+}
+
+.pageShell {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 56px;
+  position: relative;
+  z-index: 1;
+}
+
+.glassCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  color: #c8d8f0;
+  margin: 0 0 8px;
+}
+
+.mutedText {
+  color: var(--muted);
+}
+
+.brandBlock {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.brandMark {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: clamp(0.8rem, 1.8vw, 1.4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.brandTag {
+  display: none;
+}
+
+.headerPill.homePill {
+  background: rgba(255, 255, 255, 0.82);
+  color: #24364f;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+}
+
+.headerPill.homePill:hover,
+.headerPill.homePill.active {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1b2a3d;
+}
+
+.shellHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: nowrap;
+  margin-bottom: 24px;
+  min-width: 0;
+}
+
+.shellHeader.compact {
+  align-items: center;
+}
+
+.headerNav {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 6px;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+
+.headerPill {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: clamp(7px, 1vw, 10px) clamp(8px, 1vw, 14px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #d7e4f8;
+  transition: 0.2s ease;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.58rem, 1.2vw, 0.9rem);
+  line-height: 1.1;
+}
+
+.headerPill:hover,
+.headerPill.active {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.ghostButtonLink {
+  border: none;
+  border-radius: 16px;
+  padding: 14px 18px;
+  transition: 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, var(--topic-accent), #8fb6ff);
+  color: white;
+  font-weight: 700;
+}
+
+.secondaryButton,
+.ghostButtonLink {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.ghostButton {
+  background: rgba(255, 255, 255, 0.05);
+  color: #d9e6fb;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.ghostButton:hover,
+.ghostButtonLink:hover,
+.headerPill:hover,
+.topicCard:hover,
+.subpageCard:hover {
+  transform: translateY(-2px);
+}
+
+.primaryButton:disabled,
+.ghostButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.smallButton {
+  padding-inline: 16px;
+}
+
+.fullWidthButton {
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .pageShell {
+    width: min(100% - 20px, 1200px);
+  }
+
+  .shellHeader {
+    gap: 8px;
+  }
+
+  .headerNav {
+    gap: 4px;
+  }
+
+  .headerPill {
+    padding: 7px 6px;
+    font-size: 0.56rem;
+  }
+
+  .brandMark {
+    font-size: 0.78rem;
+  }
+}

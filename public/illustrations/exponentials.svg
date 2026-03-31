@@ -1,0 +1,9 @@
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="420" rx="36" fill="#120B28"/>
+  <rect x="40" y="38" width="560" height="344" rx="28" fill="#1B103A" stroke="#A78BFA" stroke-width="2"/>
+  <path d="M110 310C160 300 180 260 220 220C260 180 300 150 360 120C410 95 465 84 530 90" stroke="#C4B5FD" stroke-width="8" stroke-linecap="round"/>
+  <path d="M110 90V320H540" stroke="#6D28D9" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="360" cy="120" r="10" fill="#DDD6FE"/>
+  <text x="88" y="82" fill="#F5F3FF" font-size="34" font-family="Arial">y = ab^x</text>
+  <text x="384" y="164" fill="#DDD6FE" font-size="22" font-family="Arial">growth</text>
+</svg>

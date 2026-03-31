@@ -1,0 +1,10 @@
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="420" rx="36" fill="#2A1305"/>
+  <rect x="40" y="38" width="560" height="344" rx="28" fill="#3B1E0B" stroke="#FB923C" stroke-width="2"/>
+  <path d="M96 304H542" stroke="#F97316" stroke-width="5" stroke-linecap="round"/>
+  <path d="M116 286C186 278 208 154 278 154C336 154 370 262 432 262C472 262 510 214 532 168" stroke="#FDBA74" stroke-width="8" stroke-linecap="round"/>
+  <path d="M180 304C196 280 226 206 278 206C330 206 356 304 432 304" fill="#FB923C" fill-opacity="0.22"/>
+  <path d="M180 304C196 280 226 206 278 206C330 206 356 304 432 304" stroke="#FDBA74" stroke-width="4"/>
+  <text x="88" y="92" fill="#FFF7ED" font-size="34" font-family="Arial">∫ f(x) dx</text>
+  <text x="364" y="194" fill="#FFEDD5" font-size="22" font-family="Arial">area under curve</text>
+</svg>

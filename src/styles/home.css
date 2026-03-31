@@ -1,0 +1,326 @@
+.cleanHomePage {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(255, 236, 179, 0.2), transparent 30%),
+    radial-gradient(circle at 20% 80%, rgba(255, 183, 77, 0.14), transparent 28%),
+    linear-gradient(180deg, #fff8ef 0%, #ffe9d2 52%, #ffd9b5 100%);
+  color: #2f1e12;
+}
+
+.homeShell {
+  padding-block: 0;
+}
+
+.homeHero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 2rem;
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+  overflow: hidden;
+}
+
+.homeTitle {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(4.5rem, 13vw, 9rem);
+  line-height: 0.88;
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  color: #2f1e12;
+  text-shadow: 0 6px 24px rgba(255, 255, 255, 0.35);
+}
+
+.ferrisScene {
+  position: relative;
+  width: min(78vw, 620px);
+  aspect-ratio: 1 / 1;
+  margin-top: 0.5rem;
+  animation: rollIn 2.8s cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+
+@keyframes rollIn {
+  0% {
+    transform: translateX(-70vw) rotate(-360deg);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.ferrisWheel {
+  position: absolute;
+  inset: 0;
+  width: min(74vw, 540px);
+  aspect-ratio: 1;
+  margin: auto;
+}
+
+.wheelSpin {
+  position: absolute;
+  inset: 0;
+  animation: wheelSpin 28s linear infinite;
+}
+
+.wheelSpin.isPaused {
+  animation-play-state: paused;
+}
+
+.wheelSpin.isPaused .wheelCabinInner {
+  animation-play-state: paused;
+}
+
+.ferrisRim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 10px solid rgba(111, 78, 55, 0.88);
+  box-shadow:
+    0 0 0 14px rgba(255, 255, 255, 0.4),
+    0 18px 40px rgba(120, 72, 28, 0.16);
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.18), transparent 62%);
+}
+
+.ferrisHub {
+  position: absolute;
+  inset: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #6f4e37;
+  box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.45);
+}
+
+.ferrisSpoke {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3px;
+  height: 100%;
+  transform-origin: center center;
+  background: linear-gradient(
+    180deg,
+    rgba(111, 78, 55, 0.15),
+    rgba(111, 78, 55, 0.88),
+    rgba(111, 78, 55, 0.15)
+  );
+}
+
+.ferrisSpokeA {
+  transform: translateX(-50%) rotate(0deg);
+}
+
+.ferrisSpokeB {
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.ferrisSpokeC {
+  transform: translateX(-50%) rotate(90deg);
+}
+
+.ferrisSpokeD {
+  transform: translateX(-50%) rotate(135deg);
+}
+
+.wheelCabin,
+.cabinTracker {
+  position: absolute;
+  top: var(--cabin-top);
+  left: var(--cabin-left);
+  transform: translate(var(--cabin-shift-x), var(--cabin-shift-y));
+  transition:
+    top 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    left 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+.cabin1 {
+  --cabin-top: 1%;
+  --cabin-left: 50%;
+  --cabin-shift-x: -50%;
+  --cabin-shift-y: -50%;
+}
+
+.cabin2 {
+  --cabin-top: 50%;
+  --cabin-left: 99%;
+  --cabin-shift-x: -50%;
+  --cabin-shift-y: -50%;
+}
+
+.cabin3 {
+  --cabin-top: 99%;
+  --cabin-left: 50%;
+  --cabin-shift-x: -50%;
+  --cabin-shift-y: -50%;
+}
+
+.cabin4 {
+  --cabin-top: 50%;
+  --cabin-left: 1%;
+  --cabin-shift-x: -50%;
+  --cabin-shift-y: -50%;
+}
+
+.wheelCabin {
+  width: clamp(7.25rem, 14vw, 8.75rem);
+  height: clamp(4.2rem, 8vw, 5rem);
+  text-decoration: none;
+  color: inherit;
+  z-index: 3;
+}
+
+.wheelSpin.hasSelection .wheelCabin:not(.isSelected) {
+  opacity: 0.45;
+  filter: saturate(0.75);
+}
+
+.wheelCabin.isSelected {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.08);
+  z-index: 5;
+}
+
+.wheelCabinInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.8rem;
+  border-radius: 1.35rem;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(111, 78, 55, 0.16);
+  box-shadow: 0 16px 30px rgba(120, 72, 28, 0.12);
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #5c3b23;
+  animation: wheelSpin 28s linear infinite reverse;
+  transition:
+    transform 0.25s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease;
+}
+
+.wheelCabinLabel {
+  line-height: 1;
+}
+
+.wheelCabinHint {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.wheelCabin:hover .wheelCabinInner,
+.wheelCabin:focus-visible .wheelCabinInner {
+  transform: scale(1.06);
+  background: #fffdf9;
+  box-shadow: 0 20px 36px rgba(120, 72, 28, 0.18);
+}
+
+.wheelCabin.isSelected .wheelCabinInner {
+  background: linear-gradient(180deg, #f6d7e3 0%, #efb1c7 100%);
+  border-color: rgba(146, 54, 90, 0.26);
+  box-shadow:
+    0 22px 42px rgba(164, 64, 101, 0.18),
+    0 0 0 10px rgba(255, 255, 255, 0.34);
+  color: #6d2140;
+}
+
+.cabinTracker {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: rgba(201, 83, 126, 0.18);
+  box-shadow:
+    0 0 0 8px rgba(201, 83, 126, 0.1),
+    0 0 18px rgba(201, 83, 126, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cabinTracker::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(201, 83, 126, 0.6);
+  animation: trackerPulse 1.7s ease-in-out infinite;
+}
+
+.cabinTracker.isVisible {
+  opacity: 1;
+}
+
+@keyframes trackerPulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.22);
+    opacity: 0.35;
+  }
+}
+
+@keyframes wheelSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .homeHero {
+    padding-top: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .homeTitle {
+    max-width: 8ch;
+  }
+
+  .ferrisScene {
+    width: min(92vw, 520px);
+  }
+
+  .wheelCabinInner {
+    border-radius: 1rem;
+    padding: 0.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ferrisScene,
+  .wheelSpin,
+  .wheelCabinInner,
+  .cabinTracker::before {
+    animation: none !important;
+  }
+
+  .wheelCabin,
+  .cabinTracker {
+    transition: none !important;
+  }
+}
