@@ -4,6 +4,12 @@
   --quiz-header-pad-y: clamp(10px, 1vw, 14px);
   --quiz-header-pad-x: clamp(14px, 1.5vw, 20px);
 
+  --quiz-dock-width: 118px;
+  --quiz-dock-gap: 16px;
+  --quiz-dock-top: calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 6px);
+  --quiz-slide-top: calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 12px);
+  --quiz-slide-bottom: 24px;
+
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -36,6 +42,11 @@
   justify-content: space-between;
   gap: 16px;
   align-items: center;
+  min-width: 0;
+}
+
+.quizTopBar > * {
+  min-width: 0;
 }
 
 .quizTopBar h1 {
@@ -57,15 +68,30 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-end;
+  min-width: 0;
 }
 
 .progressDock {
   position: fixed;
   right: var(--quiz-edge);
-  top: calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 6px);
+  top: var(--quiz-dock-top);
+  bottom: var(--quiz-edge);
   z-index: 11;
-  width: 118px;
+  width: var(--quiz-dock-width);
   padding: 14px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.progressDock::-webkit-scrollbar {
+  width: 8px;
+}
+
+.progressDock::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
 }
 
 .progressDock h3,
@@ -129,9 +155,9 @@
 .quizSlide {
   height: 100vh;
   padding:
-    calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 12px)
-    calc(134px + var(--quiz-edge))
-    24px
+    var(--quiz-slide-top)
+    calc(var(--quiz-dock-width) + var(--quiz-dock-gap) + var(--quiz-edge))
+    var(--quiz-slide-bottom)
     var(--quiz-edge);
 }
 
@@ -565,6 +591,369 @@
   line-height: 1.75;
 }
 
+/* Laptop tightening: keep desktop look, but make the top rail much shorter */
+@media (max-width: 1440px), (max-height: 900px) {
+  .quizPage {
+    --quiz-edge: 8px;
+    --quiz-header-height: 50px;
+    --quiz-header-pad-y: 6px;
+    --quiz-header-pad-x: 12px;
+
+    --quiz-dock-width: 92px;
+    --quiz-dock-gap: 12px;
+    --quiz-dock-top: calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 4px);
+    --quiz-slide-top: calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 8px);
+    --quiz-slide-bottom: 14px;
+  }
+
+  .quizTopBar {
+    gap: 10px;
+  }
+
+  .quizTopBar h1 {
+    font-size: clamp(1rem, 1.6vw, 1.45rem);
+  }
+
+  .quizTopBar .eyebrow {
+    margin-bottom: 1px;
+    font-size: clamp(0.54rem, 0.7vw, 0.64rem);
+  }
+
+  .quizTopBar .primaryButton,
+  .quizTopBar .secondaryButton,
+  .quizTopBar .ghostButton,
+  .quizTopBar .ghostButtonLink {
+    padding: 9px 12px;
+    border-radius: 10px;
+  }
+
+  .quizTopActions {
+    gap: 6px;
+  }
+
+  .progressDock {
+    padding: 10px 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+  }
+
+  .progressDock h3 {
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+  }
+
+  .progressDots {
+    gap: 5px;
+  }
+
+  .progressDot {
+    min-height: 30px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+  }
+
+  .quizSlide {
+    padding:
+      var(--quiz-slide-top)
+      calc(var(--quiz-dock-width) + var(--quiz-dock-gap) + var(--quiz-edge))
+      var(--quiz-slide-bottom)
+      var(--quiz-edge);
+  }
+
+  .quizSlideInner {
+    grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.92fr);
+    gap: 14px;
+  }
+
+  .promptPane,
+  .responseComposer,
+  .answerPane {
+    padding: 16px;
+  }
+
+  .promptPane,
+  .responseComposer {
+    gap: 12px;
+  }
+
+  .responseColumn,
+  .reviewColumn,
+  .reviewContent {
+    gap: 12px;
+  }
+
+  .promptPane h2 {
+    font-size: clamp(1.15rem, 2vw, 1.75rem);
+    line-height: 1.02;
+  }
+
+  .promptText {
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  .promptMeta {
+    font-size: 0.8rem;
+    padding-bottom: 6px;
+    gap: 8px;
+  }
+
+  .calculatorBadge {
+    padding: 3px 8px;
+    font-size: 0.72rem;
+  }
+
+  .promptVisual {
+    min-height: 180px;
+    padding: 12px;
+  }
+
+  .responseTextarea {
+    min-height: 180px;
+    padding: 14px 16px;
+  }
+
+  .combinedResponseStack {
+    gap: 12px;
+  }
+
+  .combinedResponseStack .responseTextarea {
+    min-height: 120px;
+  }
+
+  .combinedResponseStack .drawingCanvas {
+    max-height: 180px;
+  }
+
+  .answerPaneHeader {
+    gap: 8px;
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+  }
+
+  .answerPane h3,
+  .responseComposer h3,
+  .summaryCard h3,
+  .reviewToolbar h3 {
+    font-size: 0.92rem;
+    margin: 0 0 4px;
+  }
+
+  .teacherAnswerContent {
+    gap: 10px;
+  }
+
+  .teacherExplanation,
+  .preserveBreaks {
+    line-height: 1.6;
+  }
+
+  .answerChip {
+    padding: 4px 8px;
+    margin: 0 0 6px;
+    font-size: 0.78rem;
+  }
+
+  .modelAnswerImageWrap {
+    min-height: 130px;
+    padding: 10px;
+  }
+
+  .reviewToolbar {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .reviewToggleButton {
+    padding: 7px 11px;
+  }
+
+  .drawingToolbar {
+    font-size: 0.84rem;
+  }
+
+  .finalSlideInner {
+    padding: 24px;
+  }
+
+  .finalSlideInner h2 {
+    font-size: clamp(2rem, 4.5vw, 3.3rem);
+  }
+
+  .summaryGrid {
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .summaryCard {
+    padding: 14px;
+  }
+}
+
+@media (max-height: 780px) {
+  .quizPage {
+    --quiz-edge: 6px;
+    --quiz-header-height: 44px;
+    --quiz-header-pad-y: 5px;
+    --quiz-header-pad-x: 10px;
+
+    --quiz-dock-width: 84px;
+    --quiz-dock-gap: 10px;
+    --quiz-dock-top: calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 3px);
+    --quiz-slide-top: calc(var(--quiz-header-height) + (var(--quiz-edge) * 2) + 6px);
+    --quiz-slide-bottom: 10px;
+  }
+
+  .quizTopBar {
+    gap: 8px;
+  }
+
+  .quizTopBar h1 {
+    font-size: clamp(0.92rem, 1.4vw, 1.25rem);
+  }
+
+  .quizTopBar .eyebrow {
+    font-size: 0.52rem;
+  }
+
+  .quizTopBar .primaryButton,
+  .quizTopBar .secondaryButton,
+  .quizTopBar .ghostButton,
+  .quizTopBar .ghostButtonLink {
+    padding: 7px 10px;
+  }
+
+  .progressDock {
+    padding: 8px 6px;
+  }
+
+  .progressDock h3 {
+    font-size: 0.74rem;
+    margin-bottom: 6px;
+  }
+
+  .progressDots {
+    gap: 4px;
+  }
+
+  .progressDot {
+    min-height: 26px;
+    font-size: 0.7rem;
+  }
+
+  .quizSlideInner {
+    gap: 12px;
+  }
+
+  .promptPane,
+  .responseComposer,
+  .answerPane {
+    padding: 14px;
+  }
+
+  .promptPane,
+  .responseComposer,
+  .responseColumn,
+  .reviewColumn,
+  .reviewContent {
+    gap: 10px;
+  }
+
+  .promptPane h2 {
+    font-size: clamp(1.05rem, 1.8vw, 1.55rem);
+    line-height: 1.03;
+  }
+
+  .promptText {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .promptMeta {
+    font-size: 0.76rem;
+    padding-bottom: 4px;
+  }
+
+  .calculatorBadge {
+    padding: 2px 7px;
+    font-size: 0.68rem;
+  }
+
+  .promptVisual {
+    min-height: 150px;
+    padding: 10px;
+  }
+
+  .responseTextarea {
+    min-height: 150px;
+    padding: 12px 14px;
+  }
+
+  .combinedResponseStack .responseTextarea {
+    min-height: 105px;
+  }
+
+  .combinedResponseStack .drawingCanvas {
+    max-height: 150px;
+  }
+
+  .answerPaneHeader {
+    gap: 6px;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+  }
+
+  .answerPane h3,
+  .responseComposer h3,
+  .summaryCard h3,
+  .reviewToolbar h3 {
+    font-size: 0.86rem;
+    margin: 0 0 3px;
+  }
+
+  .teacherAnswerContent {
+    gap: 8px;
+  }
+
+  .answerChip {
+    margin: 0 0 4px;
+    padding: 3px 7px;
+    font-size: 0.72rem;
+  }
+
+  .modelAnswerImageWrap {
+    min-height: 110px;
+    padding: 8px;
+  }
+
+  .reviewToolbar {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .reviewToggleButton {
+    padding: 6px 10px;
+  }
+
+  .finalSlideInner {
+    padding: 20px;
+  }
+
+  .finalSlideInner h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+  }
+
+  .summaryGrid {
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .summaryCard {
+    padding: 12px;
+  }
+}
+
 @media (max-width: 1024px) {
   .quizSlideInner,
   .summaryGrid {
@@ -579,6 +968,12 @@
   .progressDock {
     position: static;
     margin: 16px;
+  }
+
+  .progressDock {
+    width: auto;
+    max-height: none;
+    overflow: visible;
   }
 
   .quizViewport {

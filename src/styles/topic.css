@@ -1,7 +1,7 @@
 .topicPage .pageShell {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: clamp(16px, 2vw, 24px);
 }
 
 .topicIntroSection {
@@ -10,9 +10,9 @@
 
 .topicIntro {
   margin: 0 auto;
-  max-width: 980px;
-  font-size: clamp(0.92rem, 0.84rem + 0.35vw, 1.08rem);
-  line-height: 1.65;
+  max-width: 900px;
+  font-size: clamp(0.9rem, 0.84rem + 0.28vw, 1.02rem);
+  line-height: 1.62;
   letter-spacing: -0.02em;
   color: var(--text);
   font-weight: 400;
@@ -20,13 +20,13 @@
 }
 
 .subpageGridSection {
-  padding-top: 8px;
+  padding-top: 4px;
 }
 
 .subpageGrid.singleRow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .subpageCard {
@@ -34,10 +34,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 16px;
-  padding: 18px;
+  gap: 14px;
+  padding: 16px;
   min-width: 0;
-  min-height: 220px;
+  min-height: 200px;
   border-radius: 16px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)),
@@ -64,20 +64,20 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
 }
 
 .subpageCardTop h3 {
   margin: 0;
-  font-size: 1.1rem;
-  line-height: 1.1;
+  font-size: 1rem;
+  line-height: 1.12;
   letter-spacing: -0.03em;
 }
 
 .subpageCardStatus {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -86,7 +86,7 @@
   background: transparent;
   padding: 0;
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   line-height: 1.2;
   color: #efaa92;
   cursor: pointer;
@@ -103,8 +103,8 @@
 }
 
 .subpageCompleteBox {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.04);
@@ -134,7 +134,7 @@
 }
 
 .subpageCompleteMark {
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1;
   font-weight: 700;
   color: #fff8f1;
@@ -148,14 +148,14 @@
 
 .subpageCardConfirmInner {
   width: 100%;
-  max-width: 260px;
+  max-width: 240px;
   margin: 0 auto;
 }
 
 .subpageConfirmPrompt {
-  margin: 0 0 16px;
-  font-size: 1rem;
-  line-height: 1.45;
+  margin: 0 0 14px;
+  font-size: 0.95rem;
+  line-height: 1.42;
   color: #f5ede6;
 }
 
@@ -169,8 +169,9 @@
 .subpageDescription {
   margin: 0;
   color: var(--muted);
-  line-height: 1.55;
+  line-height: 1.5;
   flex: 1;
+  font-size: 0.94rem;
 }
 
 .subpageStartButton {
@@ -188,7 +189,7 @@
 
 .imageStripSection {
   position: relative;
-  min-height: 300px;
+  min-height: 260px;
   padding: 0;
   overflow: hidden;
   border-color: rgba(255, 240, 225, 0.12);
@@ -207,7 +208,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 80px;
+  width: 64px;
   z-index: 2;
   pointer-events: none;
 }
@@ -225,7 +226,7 @@
 .imageStripMarquee {
   overflow: hidden;
   width: 100%;
-  padding: 24px 0;
+  padding: 18px 0;
 }
 
 .imageStripMarquee.isPaused .imageStripTrack {
@@ -234,19 +235,19 @@
 
 .imageStripTrack {
   display: flex;
-  gap: 18px;
+  gap: 16px;
   width: max-content;
   animation: scrollStrip 28s linear infinite;
 }
 
 .imageStripCard {
-  flex: 0 0 260px;
-  height: 250px;
+  flex: 0 0 230px;
+  height: 220px;
   overflow: hidden;
   background: transparent;
   border: 0;
   box-shadow: none;
-  padding: 0;
+  padding: 6px;
   border-radius: 0;
 }
 
@@ -266,19 +267,8 @@
   outline-offset: 3px;
 }
 
-.imageStripCard {
-  flex: 0 0 260px;
-  height: 250px;
-  overflow: hidden;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  padding: 6px;
-  border-radius: 0;
-}
-
 .imageStripEmpty {
-  min-height: 300px;
+  min-height: 260px;
   display: grid;
   place-items: center;
   padding: 24px;
@@ -287,12 +277,12 @@
 }
 
 .imageStripLockedMessage {
-  min-height: 300px;
+  min-height: 260px;
   display: grid;
   place-items: center;
   padding: 24px;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--text);
 }
@@ -303,16 +293,16 @@
   z-index: 100;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 20px;
   background: rgba(5, 9, 16, 0.88);
   backdrop-filter: blur(10px);
 }
 
 .imageLightboxContent {
   position: relative;
-  width: min(94vw, 1400px);
-  height: min(88vh, 900px);
-  padding: 40px;
+  width: min(94vw, 1300px);
+  height: min(86vh, 860px);
+  padding: 28px;
   border-radius: 22px;
   border: 1px solid var(--border);
   background:
@@ -340,7 +330,7 @@
   background: rgba(255, 255, 255, 0.08);
   color: var(--text);
   padding: 10px 14px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
@@ -379,9 +369,9 @@
 }
 
 .imageStripCredit {
-  margin: -6px 0 0;
+  margin: -2px 0 0;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   line-height: 1.5;
   color: var(--muted);
 }
@@ -401,24 +391,35 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(calc(-50% - 9px));
+    transform: translateX(calc(-50% - 8px));
   }
 }
 
-@media (max-width: 1024px) {
+/* medium laptops */
+@media (max-width: 1200px), (max-height: 850px) {
+  .topicPage .pageShell {
+    gap: 18px;
+  }
+
+  .topicIntro {
+    max-width: 820px;
+    font-size: 0.96rem;
+  }
+
   .subpageGrid.singleRow {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
   }
 
   .subpageCard {
-    min-height: 200px;
-    padding: 16px;
+    min-height: 186px;
+    padding: 14px;
+    gap: 12px;
   }
 
   .subpageCardTop {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
   }
 
   .subpageCardStatus {
@@ -427,41 +428,7 @@
   }
 
   .subpageCardTop h3 {
-    font-size: 1rem;
-  }
-
-  .imageStripCard {
-    flex-basis: 220px;
-    height: 210px;
-  }
-
-  .imageLightbox {
-    padding: 18px;
-  }
-
-  .imageLightboxContent {
-    width: min(96vw, 1200px);
-  }
-}
-
-@media (max-width: 720px) {
-  .topicIntro {
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-
-  .subpageGrid.singleRow {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .subpageCard {
-    min-height: 180px;
-    padding: 14px;
-  }
-
-  .subpageCardTop h3 {
-    font-size: 0.95rem;
+    font-size: 0.96rem;
   }
 
   .subpageDescription {
@@ -471,29 +438,89 @@
   .subpageCompleteBox {
     width: 30px;
     height: 30px;
+  }
+
+  .subpageResetButton {
+    font-size: 0.7rem;
+  }
+
+  .imageStripSection {
+    min-height: 230px;
+  }
+
+  .imageStripMarquee {
+    padding: 14px 0;
+  }
+
+  .imageStripCard {
+    flex-basis: 200px;
+    height: 190px;
+  }
+
+  .imageLightbox {
+    padding: 16px;
+  }
+
+  .imageLightboxContent {
+    width: min(96vw, 1180px);
+    height: min(84vh, 800px);
+    padding: 18px;
+  }
+}
+
+/* tablets */
+@media (max-width: 900px) {
+  .subpageGrid.singleRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* phones */
+@media (max-width: 640px) {
+  .topicIntro {
+    font-size: 0.96rem;
+    line-height: 1.58;
+  }
+
+  .subpageGrid.singleRow {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .subpageCard {
+    min-height: 170px;
+    padding: 14px;
+  }
+
+  .subpageCardTop h3 {
+    font-size: 0.94rem;
+  }
+
+  .subpageDescription {
+    font-size: 0.87rem;
+  }
+
+  .subpageCompleteBox {
+    width: 30px;
+    height: 30px;
     border-radius: 8px;
   }
 
   .subpageResetButton {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
   }
 
   .subpageConfirmPrompt {
-    font-size: 0.84rem;
+    font-size: 0.82rem;
   }
 
   .imageStripSection {
-    min-height: 220px;
-  }
-
-  .imageStripMarquee {
-    padding: 16px 0;
+    min-height: 210px;
   }
 
   .imageStripCard {
-    flex-basis: 180px;
-    height: 170px;
-    border-radius: 14px;
+    flex-basis: 170px;
+    height: 160px;
   }
 
   .imageLightbox {
@@ -513,12 +540,16 @@
 
   .imageLightboxToggle {
     padding: 8px 11px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   .imageLightboxClose {
     width: 36px;
     height: 36px;
     font-size: 1.3rem;
+  }
+
+  .imageStripCredit {
+    font-size: 0.8rem;
   }
 }

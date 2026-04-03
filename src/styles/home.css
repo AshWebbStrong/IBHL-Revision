@@ -1,5 +1,5 @@
 .cleanHomePage {
-  min-height: 100vh;
+  min-height: 100dvh;
   background:
     radial-gradient(circle at top, rgba(255, 236, 179, 0.18), transparent 30%),
     radial-gradient(circle at 20% 80%, rgba(255, 183, 77, 0.12), transparent 28%),
@@ -12,34 +12,36 @@
 }
 
 .homeHero {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  gap: 2rem;
-  padding-top: clamp(2rem, 4vw, 3.5rem);
-  overflow: hidden;
+  gap: clamp(1rem, 1.8vh, 1.8rem);
+  padding-top: clamp(1rem, 2.2vh, 2.25rem);
+  padding-bottom: clamp(0.75rem, 1.5vh, 1.5rem);
+  overflow: clip;
 }
 
 .homeTitle {
   margin: 0;
-  max-width: 20ch;
-  font-size: clamp(4.5rem, 13vw, 9rem);
-  line-height: 0.88;
+  max-width: 14ch;
+  font-size: clamp(3.2rem, 9vw, 6.8rem);
+  line-height: 0.9;
   font-weight: 900;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.07em;
   color: #2f1e12;
   text-shadow: 0 4px 18px rgba(255, 255, 255, 0.28);
 }
 
 .ferrisScene {
   position: relative;
-  width: min(78vw, 620px);
+  width: min(66vw, 520px);
   aspect-ratio: 1 / 1;
-  margin-top: 0.5rem;
+  margin-top: 0.15rem;
   animation: rollIn 2.8s cubic-bezier(0.22, 1, 0.36, 1) 1;
+  flex: 0 0 auto;
 }
 
 @keyframes rollIn {
@@ -56,7 +58,7 @@
 .ferrisWheel {
   position: absolute;
   inset: 0;
-  width: min(74vw, 540px);
+  width: min(62vw, 470px);
   aspect-ratio: 1;
   margin: auto;
 }
@@ -79,9 +81,9 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 9px solid rgba(111, 78, 55, 0.84);
+  border: 8px solid rgba(111, 78, 55, 0.84);
   box-shadow:
-    0 0 0 12px rgba(255, 255, 255, 0.36),
+    0 0 0 10px rgba(255, 255, 255, 0.36),
     0 14px 30px rgba(120, 72, 28, 0.14);
   background: radial-gradient(circle at center, rgba(255, 255, 255, 0.16), transparent 62%);
 }
@@ -89,12 +91,12 @@
 .ferrisHub {
   position: absolute;
   inset: 50%;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: #6f4e37;
-  box-shadow: 0 0 0 9px rgba(255, 255, 255, 0.42);
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.42);
 }
 
 .ferrisSpoke {
@@ -171,8 +173,8 @@
 }
 
 .wheelCabin {
-  width: clamp(7.25rem, 14vw, 8.75rem);
-  height: clamp(4.2rem, 8vw, 5rem);
+  width: clamp(5.8rem, 10vw, 7rem);
+  height: clamp(3.4rem, 5.8vw, 4.2rem);
   text-decoration: none;
   color: inherit;
   z-index: 3;
@@ -186,7 +188,7 @@
 .wheelCabin.isSelected {
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(1.08);
+  transform: translate(-50%, -50%) scale(1.05);
   z-index: 5;
 }
 
@@ -195,15 +197,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 0.16rem;
   width: 100%;
   height: 100%;
-  padding: 0.8rem;
-  border-radius: 18px;
+  padding: 0.65rem;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.76);
   border: 1px solid rgba(111, 78, 55, 0.14);
   box-shadow: 0 12px 24px rgba(120, 72, 28, 0.12);
-  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  font-size: clamp(0.72rem, 1vw, 0.9rem);
   font-weight: 800;
   letter-spacing: 0.03em;
   color: #5c3b23;
@@ -221,7 +223,7 @@
 }
 
 .wheelCabinHint {
-  font-size: 0.68rem;
+  font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -245,8 +247,8 @@
 }
 
 .cabinTracker {
-  width: 1rem;
-  height: 1rem;
+  width: 0.9rem;
+  height: 0.9rem;
   border-radius: 999px;
   background: rgba(182, 98, 130, 0.18);
   box-shadow:
@@ -302,36 +304,175 @@
   }
 }
 
+/* Medium laptops */
+@media (max-width: 1200px), (max-height: 900px) {
+  .homeHero {
+    gap: 1rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .homeTitle {
+    font-size: clamp(2.8rem, 8vw, 5.8rem);
+    max-width: 13ch;
+  }
+
+  .ferrisScene {
+    width: min(62vw, 460px);
+  }
+
+  .ferrisWheel {
+    width: min(58vw, 420px);
+  }
+
+  .wheelCabin {
+    width: clamp(5.2rem, 9vw, 6.4rem);
+    height: clamp(3rem, 5vw, 3.8rem);
+  }
+
+  .wheelCabinInner {
+    font-size: clamp(0.68rem, 0.95vw, 0.84rem);
+    padding: 0.55rem;
+  }
+
+  .wheelCabinHint {
+    font-size: 0.52rem;
+  }
+}
+
+/* Short laptops */
+@media (max-height: 780px) {
+  .homeHero {
+    gap: 0.7rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .homeTitle {
+    font-size: clamp(2.4rem, 7vw, 4.9rem);
+    max-width: 12ch;
+    line-height: 0.92;
+  }
+
+  .ferrisScene {
+    width: min(56vw, 380px);
+    margin-top: 0;
+  }
+
+  .ferrisWheel {
+    width: min(52vw, 350px);
+  }
+
+  .wheelCabin {
+    width: 4.8rem;
+    height: 2.9rem;
+  }
+
+  .wheelCabinInner {
+    padding: 0.45rem;
+    border-radius: 13px;
+    font-size: 0.64rem;
+  }
+
+  .wheelCabinHint {
+    font-size: 0.48rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Phones */
 @media (max-width: 700px) {
   .homeHero {
-    padding-top: 1.5rem;
-    gap: 1.5rem;
+    padding-top: 1rem;
+    gap: 1rem;
   }
 
   .homeTitle {
     max-width: 8ch;
+    font-size: clamp(2.3rem, 12vw, 4.2rem);
   }
 
   .ferrisScene {
-    width: min(92vw, 520px);
+    width: min(92vw, 420px);
+  }
+
+  .ferrisWheel {
+    width: min(86vw, 380px);
+  }
+
+  .wheelCabin {
+    width: clamp(4.8rem, 18vw, 5.8rem);
+    height: clamp(2.9rem, 10vw, 3.6rem);
   }
 
   .wheelCabinInner {
     border-radius: 14px;
-    padding: 0.65rem;
+    padding: 0.5rem;
+    font-size: clamp(0.62rem, 2vw, 0.78rem);
+  }
+
+  .wheelCabinHint {
+    font-size: 0.48rem;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ferrisScene,
-  .wheelSpin,
-  .wheelCabinInner,
-  .cabinTracker::before {
-    animation: none !important;
+@media (min-width: 1500px) and (min-height: 900px) {
+  .homeHero {
+    gap: clamp(1.4rem, 2vh, 2.2rem);
+    padding-top: clamp(1.4rem, 2.8vh, 2.8rem);
+    padding-bottom: clamp(1rem, 1.8vh, 1.8rem);
   }
 
-  .wheelCabin,
-  .cabinTracker {
-    transition: none !important;
+  .homeTitle {
+    max-width: 16ch;
+    font-size: clamp(4.2rem, 8vw, 7.8rem);
+    line-height: 0.88;
+  }
+
+  .ferrisScene {
+    width: min(72vw, 580px);
+  }
+
+  .ferrisWheel {
+    width: min(68vw, 530px);
+  }
+
+  .wheelCabin {
+    width: clamp(6.4rem, 9vw, 7.8rem);
+    height: clamp(3.8rem, 5.5vw, 4.6rem);
+  }
+
+  .wheelCabinInner {
+    padding: 0.75rem;
+    font-size: clamp(0.8rem, 1vw, 0.96rem);
+  }
+
+  .wheelCabinHint {
+    font-size: 0.62rem;
+  }
+}
+
+@media (min-width: 1800px) and (min-height: 980px) {
+  .homeTitle {
+    font-size: clamp(4.8rem, 7.5vw, 8.6rem);
+    max-width: 18ch;
+  }
+
+  .ferrisScene {
+    width: min(74vw, 640px);
+  }
+
+  .ferrisWheel {
+    width: min(70vw, 580px);
+  }
+
+  .wheelCabin {
+    width: clamp(6.8rem, 8.5vw, 8.4rem);
+    height: clamp(4rem, 5vw, 4.9rem);
+  }
+
+  .wheelCabinInner {
+    font-size: clamp(0.84rem, 0.95vw, 1rem);
+    padding: 0.8rem;
   }
 }

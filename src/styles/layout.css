@@ -1,12 +1,12 @@
 .page {
-  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
 }
 
 .pageShell {
   width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 24px 0 56px;
+  padding: 20px 0 48px;
   position: relative;
   z-index: 1;
 }
@@ -41,7 +41,7 @@
 .brandMark {
   display: inline-block;
   white-space: nowrap;
-  font-size: clamp(0.8rem, 1.8vw, 1.4rem);
+  font-size: clamp(0.8rem, 1.2vw, 1.25rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -76,9 +76,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: nowrap;
-  margin-bottom: 24px;
+  margin-bottom: 0px;
   min-width: 0;
 }
 
@@ -98,7 +98,7 @@
 .headerPill {
   flex: 1 1 0;
   min-width: 0;
-  padding: clamp(8px, 1vw, 10px) clamp(10px, 1vw, 14px);
+  padding: 8px 10px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid var(--border);
@@ -113,7 +113,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: clamp(0.58rem, 1.2vw, 0.9rem);
+  font-size: clamp(0.62rem, 0.78vw, 0.88rem);
   line-height: 1.1;
   font-weight: 600;
 }
@@ -205,13 +205,38 @@
   width: 100%;
 }
 
-@media (max-width: 720px) {
+/* Laptop tightening, still one row */
+@media (max-width: 1200px) {
   .pageShell {
-    width: min(100% - 20px, 1200px);
+    width: min(100% - 24px, 1200px);
+    padding-top: 16px;
+    padding-bottom: 40px;
   }
 
   .shellHeader {
     gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .brandMark {
+    font-size: 0.9rem;
+  }
+
+  .headerNav {
+    gap: 5px;
+  }
+
+  .headerPill {
+    padding: 7px 8px;
+    font-size: 0.7rem;
+    border-radius: 10px;
+  }
+}
+
+/* Narrower laptops */
+@media (max-width: 980px) {
+  .brandMark {
+    font-size: 0.82rem;
   }
 
   .headerNav {
@@ -219,11 +244,32 @@
   }
 
   .headerPill {
-    padding: 7px 6px;
+    padding: 6px 7px;
+    font-size: 0.64rem;
+    border-radius: 10px;
+  }
+}
+
+/* Phones */
+@media (max-width: 720px) {
+  .pageShell {
+    width: min(100% - 20px, 1200px);
+  }
+
+  .shellHeader {
+    gap: 6px;
+  }
+
+  .headerNav {
+    gap: 4px;
+  }
+
+  .headerPill {
+    padding: 6px 5px;
     font-size: 0.56rem;
   }
 
   .brandMark {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
   }
 }
