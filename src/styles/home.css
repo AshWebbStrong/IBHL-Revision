@@ -37,7 +37,7 @@
 
 .ferrisScene {
   position: relative;
-  width: min(66vw, 520px);
+  width: min(76vw, 640px);
   aspect-ratio: 1 / 1;
   margin-top: 0.15rem;
   animation: rollIn 2.8s cubic-bezier(0.22, 1, 0.36, 1) 1;
@@ -58,7 +58,7 @@
 .ferrisWheel {
   position: absolute;
   inset: 0;
-  width: min(62vw, 470px);
+  width: min(72vw, 590px);
   aspect-ratio: 1;
   margin: auto;
 }
@@ -318,11 +318,11 @@
   }
 
   .ferrisScene {
-    width: min(62vw, 460px);
+    width: min(70vw, 540px);
   }
 
   .ferrisWheel {
-    width: min(58vw, 420px);
+    width: min(66vw, 500px);
   }
 
   .wheelCabin {
@@ -355,12 +355,12 @@
   }
 
   .ferrisScene {
-    width: min(56vw, 380px);
+    width: min(64vw, 470px);
     margin-top: 0;
   }
 
   .ferrisWheel {
-    width: min(52vw, 350px);
+    width: min(60vw, 430px);
   }
 
   .wheelCabin {
@@ -430,11 +430,11 @@
   }
 
   .ferrisScene {
-    width: min(72vw, 580px);
+    width: min(80vw, 700px);
   }
 
   .ferrisWheel {
-    width: min(68vw, 530px);
+    width: min(76vw, 650px);
   }
 
   .wheelCabin {
@@ -459,11 +459,11 @@
   }
 
   .ferrisScene {
-    width: min(74vw, 640px);
+    width: min(82vw, 760px);
   }
 
   .ferrisWheel {
-    width: min(70vw, 580px);
+    width: min(78vw, 700px);
   }
 
   .wheelCabin {
@@ -474,5 +474,19 @@
   .wheelCabinInner {
     font-size: clamp(0.84rem, 0.95vw, 1rem);
     padding: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ferrisScene,
+  .wheelSpin,
+  .wheelCabinInner,
+  .cabinTracker::before {
+    animation: none !important;
+  }
+
+  .wheelCabin,
+  .cabinTracker {
+    transition: none !important;
   }
 }
