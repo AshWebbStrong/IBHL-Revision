@@ -1,8 +1,8 @@
 .cleanHomePage {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top, rgba(255, 236, 179, 0.2), transparent 30%),
-    radial-gradient(circle at 20% 80%, rgba(255, 183, 77, 0.14), transparent 28%),
+    radial-gradient(circle at top, rgba(255, 236, 179, 0.18), transparent 30%),
+    radial-gradient(circle at 20% 80%, rgba(255, 183, 77, 0.12), transparent 28%),
     linear-gradient(180deg, #fff8ef 0%, #ffe9d2 52%, #ffd9b5 100%);
   color: #2f1e12;
 }
@@ -31,7 +31,7 @@
   font-weight: 900;
   letter-spacing: -0.08em;
   color: #2f1e12;
-  text-shadow: 0 6px 24px rgba(255, 255, 255, 0.35);
+  text-shadow: 0 4px 18px rgba(255, 255, 255, 0.28);
 }
 
 .ferrisScene {
@@ -79,11 +79,11 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 10px solid rgba(111, 78, 55, 0.88);
+  border: 9px solid rgba(111, 78, 55, 0.84);
   box-shadow:
-    0 0 0 14px rgba(255, 255, 255, 0.4),
-    0 18px 40px rgba(120, 72, 28, 0.16);
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.18), transparent 62%);
+    0 0 0 12px rgba(255, 255, 255, 0.36),
+    0 14px 30px rgba(120, 72, 28, 0.14);
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.16), transparent 62%);
 }
 
 .ferrisHub {
@@ -94,7 +94,7 @@
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: #6f4e37;
-  box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 0 9px rgba(255, 255, 255, 0.42);
 }
 
 .ferrisSpoke {
@@ -106,9 +106,9 @@
   transform-origin: center center;
   background: linear-gradient(
     180deg,
-    rgba(111, 78, 55, 0.15),
-    rgba(111, 78, 55, 0.88),
-    rgba(111, 78, 55, 0.15)
+    rgba(111, 78, 55, 0.14),
+    rgba(111, 78, 55, 0.84),
+    rgba(111, 78, 55, 0.14)
   );
 }
 
@@ -199,10 +199,10 @@
   width: 100%;
   height: 100%;
   padding: 0.8rem;
-  border-radius: 1.35rem;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(111, 78, 55, 0.16);
-  box-shadow: 0 16px 30px rgba(120, 72, 28, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(111, 78, 55, 0.14);
+  box-shadow: 0 12px 24px rgba(120, 72, 28, 0.12);
   font-size: clamp(0.85rem, 1.6vw, 1rem);
   font-weight: 800;
   letter-spacing: 0.03em;
@@ -225,33 +225,33 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.72;
+  opacity: 0.7;
 }
 
 .wheelCabin:hover .wheelCabinInner,
 .wheelCabin:focus-visible .wheelCabinInner {
-  transform: scale(1.06);
+  transform: scale(1.05);
   background: #fffdf9;
-  box-shadow: 0 20px 36px rgba(120, 72, 28, 0.18);
+  box-shadow: 0 16px 28px rgba(120, 72, 28, 0.14);
 }
 
 .wheelCabin.isSelected .wheelCabinInner {
-  background: linear-gradient(180deg, #f6d7e3 0%, #efb1c7 100%);
-  border-color: rgba(146, 54, 90, 0.26);
+  background: linear-gradient(180deg, #f2d8df 0%, #e5b1c1 100%);
+  border-color: rgba(146, 54, 90, 0.22);
   box-shadow:
-    0 22px 42px rgba(164, 64, 101, 0.18),
-    0 0 0 10px rgba(255, 255, 255, 0.34);
-  color: #6d2140;
+    0 18px 34px rgba(164, 64, 101, 0.16),
+    0 0 0 8px rgba(255, 255, 255, 0.3);
+  color: #6b2741;
 }
 
 .cabinTracker {
-  width: 1.05rem;
-  height: 1.05rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: 999px;
-  background: rgba(201, 83, 126, 0.18);
+  background: rgba(182, 98, 130, 0.18);
   box-shadow:
-    0 0 0 8px rgba(201, 83, 126, 0.1),
-    0 0 18px rgba(201, 83, 126, 0.18);
+    0 0 0 8px rgba(182, 98, 130, 0.08),
+    0 0 16px rgba(182, 98, 130, 0.18);
   opacity: 0;
   pointer-events: none;
   z-index: 2;
@@ -262,7 +262,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 2px solid rgba(201, 83, 126, 0.6);
+  border: 2px solid rgba(182, 98, 130, 0.56);
   animation: trackerPulse 1.7s ease-in-out infinite;
 }
 
@@ -306,7 +306,7 @@
   }
 
   .wheelCabinInner {
-    border-radius: 1rem;
+    border-radius: 14px;
     padding: 0.65rem;
   }
 }

@@ -4,6 +4,21 @@
   gap: 24px;
 }
 
+.topicIntroSection {
+  padding-top: 0;
+}
+
+.topicIntro {
+  margin: 0 auto;
+  max-width: 980px;
+  font-size: clamp(0.92rem, 0.84rem + 0.35vw, 1.08rem);
+  line-height: 1.65;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-weight: 400;
+  text-align: center;
+}
+
 .subpageGridSection {
   padding-top: 8px;
 }
@@ -23,7 +38,22 @@
   padding: 18px;
   min-width: 0;
   min-height: 220px;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)),
+    var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.subpageCard:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
 }
 
 .subpageCard.isLocked {
@@ -58,13 +88,13 @@
   margin: 0;
   font-size: 0.78rem;
   line-height: 1.2;
-  color: #ff6b6b;
+  color: #efaa92;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .subpageResetButton:hover:not(:disabled) {
-  color: #ff8a8a;
+  color: #ffc1a8;
 }
 
 .subpageResetButton:disabled {
@@ -75,9 +105,9 @@
 .subpageCompleteBox {
   width: 34px;
   height: 34px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -90,8 +120,8 @@
 }
 
 .subpageCompleteBox.isClickable:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--border-strong);
 }
 
 .subpageCompleteBox:disabled {
@@ -99,15 +129,15 @@
 }
 
 .subpageCompleteBox.isComplete {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(215, 154, 99, 0.18);
+  border-color: rgba(215, 154, 99, 0.34);
 }
 
 .subpageCompleteMark {
   font-size: 1rem;
   line-height: 1;
   font-weight: 700;
-  color: #f5f7fb;
+  color: #fff8f1;
 }
 
 .subpageCardConfirmState {
@@ -126,7 +156,7 @@
   margin: 0 0 16px;
   font-size: 1rem;
   line-height: 1.45;
-  color: #f5f7fb;
+  color: #f5ede6;
 }
 
 .subpageConfirmActions {
@@ -161,14 +191,14 @@
   min-height: 300px;
   padding: 0;
   overflow: hidden;
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 240, 225, 0.12);
   background:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--topic-accent) 20%, transparent),
-      rgba(255, 255, 255, 0.03)
+      rgba(215, 154, 99, 0.12),
+      rgba(255, 255, 255, 0.02)
     ),
-    rgba(255, 255, 255, 0.04);
+    rgba(255, 255, 255, 0.02);
 }
 
 .imageStripSection::before,
@@ -184,18 +214,22 @@
 
 .imageStripSection::before {
   left: 0;
-  background: linear-gradient(to right, rgba(7, 11, 22, 0.95), transparent);
+  background: linear-gradient(to right, rgba(15, 18, 23, 0.95), transparent);
 }
 
 .imageStripSection::after {
   right: 0;
-  background: linear-gradient(to left, rgba(7, 11, 22, 0.95), transparent);
+  background: linear-gradient(to left, rgba(15, 18, 23, 0.95), transparent);
 }
 
 .imageStripMarquee {
   overflow: hidden;
   width: 100%;
   padding: 24px 0;
+}
+
+.imageStripMarquee.isPaused .imageStripTrack {
+  animation-play-state: paused;
 }
 
 .imageStripTrack {
@@ -208,17 +242,39 @@
 .imageStripCard {
   flex: 0 0 260px;
   height: 250px;
-  border-radius: 24px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
 }
 
-.imageStripImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.imageStripCardButton {
+  padding: 0;
+  cursor: zoom-in;
+  appearance: none;
+}
+
+.imageStripCardButton:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 240, 225, 0.18);
+}
+
+.imageStripCardButton:focus-visible {
+  outline: 2px solid var(--topic-accent);
+  outline-offset: 3px;
+}
+
+.imageStripCard {
+  flex: 0 0 260px;
+  height: 250px;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 6px;
+  border-radius: 0;
 }
 
 .imageStripEmpty {
@@ -228,6 +284,116 @@
   padding: 24px;
   text-align: center;
   color: var(--muted);
+}
+
+.imageStripLockedMessage {
+  min-height: 300px;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.imageLightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(5, 9, 16, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.imageLightboxContent {
+  position: relative;
+  width: min(94vw, 1400px);
+  height: min(88vh, 900px);
+  padding: 40px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    var(--surface-strong);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageLightboxTopControls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+
+.imageLightboxToggle {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.imageLightboxToggle:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.imageLightboxImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 14px;
+}
+
+.imageLightboxClose {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.imageLightboxClose:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.imageStripCredit {
+  margin: -6px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.imageStripCredit a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.imageStripCredit a:hover {
+  color: #ffffff;
 }
 
 @keyframes scrollStrip {
@@ -268,9 +434,22 @@
     flex-basis: 220px;
     height: 210px;
   }
+
+  .imageLightbox {
+    padding: 18px;
+  }
+
+  .imageLightboxContent {
+    width: min(96vw, 1200px);
+  }
 }
 
 @media (max-width: 720px) {
+  .topicIntro {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
   .subpageGrid.singleRow {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
@@ -292,7 +471,7 @@
   .subpageCompleteBox {
     width: 30px;
     height: 30px;
-    border-radius: 9px;
+    border-radius: 8px;
   }
 
   .subpageResetButton {
@@ -314,6 +493,32 @@
   .imageStripCard {
     flex-basis: 180px;
     height: 170px;
-    border-radius: 18px;
+    border-radius: 14px;
+  }
+
+  .imageLightbox {
+    padding: 12px;
+  }
+
+  .imageLightboxContent {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .imageLightboxTopControls {
+    top: 8px;
+    right: 8px;
+    gap: 8px;
+  }
+
+  .imageLightboxToggle {
+    padding: 8px 11px;
+    font-size: 0.8rem;
+  }
+
+  .imageLightboxClose {
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
   }
 }

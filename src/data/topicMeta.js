@@ -50,7 +50,7 @@ export const subpageDefinitions = [
     slug: 'understanding',
     label: 'Understanding',
     description:
-      'Questions on meaning, interpretation, and conceptual reasoning before technique.',
+      'Consider questions on meaning, interpretation, and conceptual reasoning before technique.',
         outro: {
   }
   },
@@ -59,13 +59,13 @@ export const subpageDefinitions = [
     slug: 'method-selection',
     label: 'Method Selection',
     description:
-      'Students decide which approach to use and justify why it fits the task.',
+      'Decide which approach to use and sometimes justify why it fits the task.',
   },
   {
     slug: 'accuracy',
     label: 'Accuracy',
     description:
-      'Students write complete, careful answers and compare them to a model solution.',
+      'Write complete, careful answers and compare them to a given solution.',
   },
 ];
 

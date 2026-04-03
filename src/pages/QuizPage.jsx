@@ -270,9 +270,6 @@ export default function QuizPage() {
                 <Link to={outro.primaryTo ?? `/${topic.slug}`} className="primaryButton">
                   {outro.primaryLabel ?? `Return to ${topic.shortLabel}`}
                 </Link>
-                <Link to={outro.secondaryTo ?? '/'} className="secondaryButton">
-                  {outro.secondaryLabel ?? 'Back to homepage'}
-                </Link>
               </div>
             </div>
           </section>

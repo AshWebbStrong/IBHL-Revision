@@ -13,6 +13,7 @@ import {
   integrationQuestions,
 } from './topics/integration';
 import {
+  rationalTopicStripImages,
   rationalOutros,
   rationalQuestions,
 } from './topics/rational';
@@ -33,6 +34,7 @@ const outroBanks = {
 
 const imageBanks = {
   'exponentials-and-logarithms': exponentialsTopicStripImages,
+  'rational-functions-and-transformations': rationalTopicStripImages,
 };
 
 export const topics = topicDefinitions.map((topic) => ({

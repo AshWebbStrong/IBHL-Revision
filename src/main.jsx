@@ -7,6 +7,7 @@ import './styles/layout.css';
 import './styles/home.css';
 import './styles/topic.css';
 import './styles/quiz.css';
+import 'katex/dist/katex.min.css';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
