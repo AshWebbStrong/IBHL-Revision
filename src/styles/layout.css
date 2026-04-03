@@ -118,6 +118,12 @@
   font-weight: 600;
 }
 
+.headerPill.isDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .headerPill:hover {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.07);

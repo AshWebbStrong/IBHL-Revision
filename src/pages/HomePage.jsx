@@ -29,13 +29,18 @@ export default function HomePage() {
     }
   }
 
-  function handleCabinClick(event, slug) {
-    if (activeSlug === slug) {
+  function handleCabinClick(event, topic) {
+    if (topic.disabled) {
+      event.preventDefault();
+      return;
+    }
+
+    if (activeSlug === topic.slug) {
       return;
     }
 
     event.preventDefault();
-    setActiveSlug(slug);
+    setActiveSlug(topic.slug);
   }
 
   return (
@@ -67,28 +72,43 @@ export default function HomePage() {
                   />
                 ))}
 
-                {wheelTopics.map((topic, index) => (
-                  <Link
-                    key={topic.slug}
-                    to={`/${topic.slug}`}
-                    className={`wheelCabin cabin${index + 1} ${
-                      activeSlug === topic.slug ? 'isSelected' : ''
-                    }`}
-                    onClick={(event) => handleCabinClick(event, topic.slug)}
-                    aria-label={
-                      activeSlug === topic.slug
-                        ? `Open ${topic.slug}`
-                        : `Select ${topic.slug}`
-                    }
-                  >
-                    <span className="wheelCabinInner">
-                      <span className="wheelCabinLabel">{topic.title}</span>
-                      {activeSlug === topic.slug ? (
-                        <span className="wheelCabinHint">click to enter</span>
-                      ) : null}
-                    </span>
-                  </Link>
-                ))}
+                {wheelTopics.map((topic, index) =>
+                  topic.disabled ? (
+                    <button
+                      key={topic.slug}
+                      type="button"
+                      className={`wheelCabin cabin${index + 1} isDisabled`}
+                      disabled
+                      aria-label={`${topic.title} unavailable`}
+                    >
+                      <span className="wheelCabinInner">
+                        <span className="wheelCabinLabel">{topic.title}</span>
+                        <span className="wheelCabinHint">coming soon</span>
+                      </span>
+                    </button>
+                  ) : (
+                    <Link
+                      key={topic.slug}
+                      to={`/${topic.slug}`}
+                      className={`wheelCabin cabin${index + 1} ${
+                        activeSlug === topic.slug ? 'isSelected' : ''
+                      }`}
+                      onClick={(event) => handleCabinClick(event, topic)}
+                      aria-label={
+                        activeSlug === topic.slug
+                          ? `Open ${topic.title}`
+                          : `Select ${topic.title}`
+                      }
+                    >
+                      <span className="wheelCabinInner">
+                        <span className="wheelCabinLabel">{topic.title}</span>
+                        {activeSlug === topic.slug ? (
+                          <span className="wheelCabinHint">click to enter</span>
+                        ) : null}
+                      </span>
+                    </Link>
+                  )
+                )}
               </div>
             </div>
           </div>

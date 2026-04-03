@@ -31,6 +31,7 @@ export const topicDefinitions = [
       'Practise derivative interpretation, selecting techniques, and presenting clean working.',
     longDescription:
       'Ideal for short conceptual checks, method decisions, and step-by-step symbolic answers.',
+    disabled: true,
   },
   {
     slug: 'integration',
@@ -42,6 +43,7 @@ export const topicDefinitions = [
       'Cover antiderivatives, area ideas, choosing techniques, and communicating solutions clearly.',
     longDescription:
       'You can later replace these placeholder questions with your full scrolling IB revision tasks.',
+    disabled: true,
   },
 ];
 
@@ -51,10 +53,8 @@ export const subpageDefinitions = [
     label: 'Understanding',
     description:
       'Consider questions on meaning, interpretation, and conceptual reasoning before technique.',
-        outro: {
-  }
+    outro: {},
   },
-  
   {
     slug: 'method-selection',
     label: 'Method Selection',

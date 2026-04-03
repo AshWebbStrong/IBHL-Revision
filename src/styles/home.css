@@ -270,6 +270,17 @@
   opacity: 1;
 }
 
+.wheelCabin.isDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.2);
+}
+
+.wheelCabin.isDisabled .wheelCabinHint {
+  opacity: 0.9;
+}
+
 @keyframes trackerPulse {
   0%,
   100% {
