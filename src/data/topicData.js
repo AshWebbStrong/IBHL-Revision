@@ -2,6 +2,7 @@ import { siteMeta, subpageDefinitions, topicDefinitions } from './topicMeta';
 import {
   differentiationOutros,
   differentiationQuestions,
+  differentiationTopicStripImages,
 } from './topics/differentiation';
 import {
   exponentialsTopicStripImages,
@@ -35,6 +36,7 @@ const outroBanks = {
 const imageBanks = {
   'exponentials-and-logarithms': exponentialsTopicStripImages,
   'rational-functions-and-transformations': rationalTopicStripImages,
+  differentiation: differentiationTopicStripImages
 };
 
 export const topics = topicDefinitions.map((topic) => ({

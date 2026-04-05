@@ -31,7 +31,6 @@ export const topicDefinitions = [
       'Practise derivative interpretation, selecting techniques, and presenting clean working.',
     longDescription:
       'Ideal for short conceptual checks, method decisions, and step-by-step symbolic answers.',
-    disabled: true,
   },
   {
     slug: 'integration',
