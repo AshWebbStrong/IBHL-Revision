@@ -90,14 +90,14 @@ export default function QuizSection({
   }, [savedResponse, question.type]);
 
   const [draftValue, setDraftValue] = useState(initialDraft);
-  const [reviewMode, setReviewMode] = useState(savedResponse ? 'answer' : 'question');
+  const [reviewMode, setReviewMode] = useState('both');
 
   useEffect(() => {
     setDraftValue(initialDraft);
   }, [initialDraft, question.id]);
 
   useEffect(() => {
-    setReviewMode(savedResponse ? 'answer' : 'question');
+    setReviewMode('both');
   }, [question.id, Boolean(savedResponse)]);
 
   const isSubmitted = Boolean(savedResponse);

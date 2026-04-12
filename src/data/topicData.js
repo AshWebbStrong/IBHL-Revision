@@ -1,42 +1,35 @@
 import { siteMeta, subpageDefinitions, topicDefinitions } from './topicMeta';
-import {
-  differentiationOutros,
-  differentiationQuestions,
-  differentiationTopicStripImages,
-} from './topics/differentiation';
-import {
-  exponentialsTopicStripImages,
-  exponentialsOutros,
-  exponentialsQuestions,
-} from './topics/exponentials';
-import {
-  integrationOutros,
-  integrationQuestions,
-} from './topics/integration';
-import {
-  rationalTopicStripImages,
-  rationalOutros,
-  rationalQuestions,
-} from './topics/rational';
+import * as differentiationTopic from './topics/differentiation';
+import * as exponentialsTopic from './topics/exponentials';
+import * as integrationTopic from './topics/integration';
+import * as rationalTopic from './topics/rational';
 
 const questionBanks = {
-  'exponentials-and-logarithms': exponentialsQuestions,
-  'rational-functions-and-transformations': rationalQuestions,
-  differentiation: differentiationQuestions,
-  integration: integrationQuestions,
+  'exponentials-and-logarithms': exponentialsTopic.exponentialsQuestions,
+  'rational-functions-and-transformations': rationalTopic.rationalQuestions,
+  differentiation: differentiationTopic.differentiationQuestions,
+  integration: integrationTopic.integrationQuestions,
+};
+
+const introBanks = {
+  'exponentials-and-logarithms': exponentialsTopic.exponentialsIntros,
+  'rational-functions-and-transformations': rationalTopic.rationalIntros,
+  differentiation: differentiationTopic.differentiationIntros,
+  integration: integrationTopic.integrationIntros,
 };
 
 const outroBanks = {
-  'exponentials-and-logarithms': exponentialsOutros,
-  'rational-functions-and-transformations': rationalOutros,
-  differentiation: differentiationOutros,
-  integration: integrationOutros,
+  'exponentials-and-logarithms': exponentialsTopic.exponentialsOutros,
+  'rational-functions-and-transformations': rationalTopic.rationalOutros,
+  differentiation: differentiationTopic.differentiationOutros,
+  integration: integrationTopic.integrationOutros,
 };
 
 const imageBanks = {
-  'exponentials-and-logarithms': exponentialsTopicStripImages,
-  'rational-functions-and-transformations': rationalTopicStripImages,
-  differentiation: differentiationTopicStripImages
+  'exponentials-and-logarithms': exponentialsTopic.exponentialsTopicStripImages,
+  'rational-functions-and-transformations': rationalTopic.rationalTopicStripImages,
+  differentiation: differentiationTopic.differentiationTopicStripImages,
+  integration: integrationTopic.integrationTopicStripImages,
 };
 
 export const topics = topicDefinitions.map((topic) => ({
@@ -45,6 +38,11 @@ export const topics = topicDefinitions.map((topic) => ({
   subpages: subpageDefinitions.map((subpage) => ({
     ...subpage,
     questions: questionBanks[topic.slug]?.[subpage.slug] ?? [],
+    intro: introBanks[topic.slug]?.[subpage.slug] ?? {
+      title: subpage.label,
+      summary: `This section is for you to review your ${subpage.label.toLowerCase()} for ${topic.title}.`,
+      primaryLabel: 'Start section',
+    },
     outro: outroBanks[topic.slug]?.[subpage.slug] ?? {
       title: `${subpage.label} complete`,
       summary: `You have finished ${subpage.label.toLowerCase()} for ${topic.title}.`,

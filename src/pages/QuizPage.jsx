@@ -34,21 +34,33 @@ export default function QuizPage() {
   const lockRef = useRef(false);
 
   const questions = subpage?.questions ?? [];
+  const intro = subpage?.intro ?? {};
   const outro = subpage?.outro ?? {};
   const responses = progress[routeKey] ?? {};
 
+  const introIndex = 0;
+  const firstQuestionIndex = 1;
+  const outroIndex = questions.length + 1;
+  const totalSlides = questions.length + 2;
+
+  const isIntroSlide = currentIndex === introIndex;
+  const isOutroSlide = currentIndex === outroIndex;
+  const isQuestionSlide = currentIndex >= firstQuestionIndex && currentIndex <= questions.length;
+  const currentQuestion = isQuestionSlide ? questions[currentIndex - 1] : null;
+
   const completedCount = questions.filter((question) => Boolean(responses[question.id])).length;
   const allComplete = completedCount === questions.length;
-  const totalSlides = questions.length + 1;
-  const maxUnlockedIndex = allComplete ? questions.length : completedCount;
+  const maxUnlockedIndex = allComplete ? outroIndex : completedCount + 1;
 
   const canAdvance = useMemo(() => {
-    if (currentIndex >= questions.length) return false;
-    return Boolean(responses[questions[currentIndex]?.id]);
-  }, [currentIndex, questions, responses]);
+    if (isIntroSlide) return true;
+    if (!isQuestionSlide) return false;
+    return Boolean(responses[currentQuestion?.id]);
+  }, [isIntroSlide, isQuestionSlide, responses, currentQuestion]);
 
   useEffect(() => {
     setProgress(readProgress());
+    setCurrentIndex(0);
   }, [routeKey]);
 
   useEffect(() => {
@@ -84,7 +96,7 @@ export default function QuizPage() {
       event.preventDefault();
 
       if (event.deltaY > 0) {
-        if (!canAdvance && currentIndex < questions.length) return;
+        if (isQuestionSlide && !canAdvance) return;
         goToIndex(Math.min(currentIndex + 1, totalSlides - 1));
       } else {
         goToIndex(Math.max(currentIndex - 1, 0));
@@ -97,7 +109,7 @@ export default function QuizPage() {
 
       if (['ArrowDown', 'PageDown', ' '].includes(event.key)) {
         event.preventDefault();
-        if (!canAdvance && currentIndex < questions.length) return;
+        if (isQuestionSlide && !canAdvance) return;
         goToIndex(Math.min(currentIndex + 1, totalSlides - 1));
       }
 
@@ -120,7 +132,7 @@ export default function QuizPage() {
       if (Math.abs(delta) < 40) return;
 
       if (delta > 0) {
-        if (!canAdvance && currentIndex < questions.length) return;
+        if (isQuestionSlide && !canAdvance) return;
         goToIndex(Math.min(currentIndex + 1, totalSlides - 1));
       } else {
         goToIndex(Math.max(currentIndex - 1, 0));
@@ -138,14 +150,14 @@ export default function QuizPage() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [canAdvance, currentIndex, enhancedNav, maxUnlockedIndex, questions.length, totalSlides]);
+  }, [canAdvance, currentIndex, enhancedNav, isQuestionSlide, maxUnlockedIndex, totalSlides]);
 
   useEffect(() => {
     if (!allComplete) return;
-    if (currentIndex !== questions.length) return;
+    if (currentIndex !== outroIndex) return;
 
     markRouteComplete(routeKey);
-  }, [allComplete, currentIndex, questions.length, routeKey]);
+  }, [allComplete, currentIndex, outroIndex, routeKey]);
 
   if (!topic || !subpage) {
     return <NotFoundPage />;
@@ -160,7 +172,7 @@ export default function QuizPage() {
     const next = resetQuestionResponse(routeKey, questionId);
     setProgress(next);
     const questionIndex = questions.findIndex((question) => question.id === questionId);
-    setCurrentIndex(questionIndex);
+    setCurrentIndex(questionIndex + 1);
   }
 
   function handleJump(index) {
@@ -169,6 +181,17 @@ export default function QuizPage() {
     }
   }
 
+  function handleNext() {
+    if (isOutroSlide) return;
+    if (isQuestionSlide && !canAdvance) return;
+    setCurrentIndex(Math.min(currentIndex + 1, totalSlides - 1));
+  }
+
+  function getNextLabel() {
+    if (isIntroSlide) return intro.primaryLabel ?? 'Start section';
+    if (currentIndex === questions.length && canAdvance) return 'Finish section';
+    return 'Next';
+  }
   return (
     <div className="quizPage" style={{ '--topic-accent': topic.accent }}>
       <div className="quizTopBar glassCard">
@@ -194,19 +217,10 @@ export default function QuizPage() {
           <button
             type="button"
             className="primaryButton smallButton"
-            onClick={() =>
-              setCurrentIndex(
-                Math.min(
-                  currentIndex + 1,
-                  currentIndex < questions.length && !canAdvance
-                    ? currentIndex
-                    : totalSlides - 1,
-                ),
-              )
-            }
-            disabled={currentIndex < questions.length && !canAdvance}
+            onClick={handleNext}
+            disabled={isOutroSlide || (isQuestionSlide && !canAdvance)}
           >
-            {currentIndex === questions.length - 1 && canAdvance ? 'Finish section' : 'Next'}
+            {getNextLabel()}
           </button>
         </div>
       </div>
@@ -223,6 +237,52 @@ export default function QuizPage() {
           className="quizTrack"
           style={{ transform: `translateY(-${currentIndex * 100}vh)` }}
         >
+          
+          <section className="quizSlide introSlide">
+            <div className="finalSlideInner glassCard">
+              <p className="eyebrow">{intro.eyebrow ?? 'Before you begin'}</p>
+              <h2>{intro.title ?? subpage.label}</h2>
+              <p>
+                {intro.summary ?? 
+                  `This section contains ${questions.length} question${
+                    questions.length === 1 ? '' : 's'
+                  }. Submit each answer to unlock the next one.`}
+              </p>
+
+              {intro.recapItems?.length || intro.tipText ? (
+                <div className="summaryGrid">
+                  {intro.recapItems?.length ? (
+                    <article className="summaryCard">
+                      <h3>{intro.recapTitle ?? 'What to focus on'}</h3>
+                      <ul>
+                        {intro.recapItems.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </article>
+                  ) : null}
+
+                  {intro.tipText ? (
+                    <article className="summaryCard">
+                      <h3>{intro.tipTitle ?? 'Teacher tip'}</h3>
+                      <p>{intro.tipText}</p>
+                    </article>
+                  ) : null}
+                </div>
+              ) : null}
+
+              <div className="heroActions">
+                <button
+                  type="button"
+                  className="primaryButton"
+                  onClick={() => setCurrentIndex(firstQuestionIndex)}
+                >
+                  {intro.primaryLabel ?? 'Start section'}
+                </button>
+              </div>
+            </div>
+          </section>
+
           {questions.map((question, index) => (
             <QuizSection
               key={question.id}

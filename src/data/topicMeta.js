@@ -42,7 +42,6 @@ export const topicDefinitions = [
       'Cover antiderivatives, area ideas, choosing techniques, and communicating solutions clearly.',
     longDescription:
       'You can later replace these placeholder questions with your full scrolling IB revision tasks.',
-    disabled: true,
   },
 ];
 
