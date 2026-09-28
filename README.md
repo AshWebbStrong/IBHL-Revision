@@ -1,6 +1,6 @@
 # WhereToStart
 
-A React + Vite shell for a student revision website with:
+A React + Vite student revision website with:
 
 - an animated homepage
 - topic landing pages
@@ -10,19 +10,18 @@ A React + Vite shell for a student revision website with:
 - backward movement always allowed
 - browser-saved answers via `localStorage`
 - support for text, multiple-choice, and drawing inputs
+- an explicit option to answer on paper
+- self-assessment and a list of questions to revisit
+- question counts and saved progress on the topic cards
 
-## Routes included
+## Available routes
 
 - `/`
 - `/exponentials-and-logarithms`
 - `/exponentials-and-logarithms/understanding`
 - `/exponentials-and-logarithms/method-selection`
 - `/exponentials-and-logarithms/accuracy`
-- `/rational-functions-and-transformations`
-- `/differentiation`
-- `/integration`
-
-Each topic page also links to its three subpages.
+The rational functions, differentiation, and integration question banks remain in the project but are temporarily hidden. Their topic and quiz URLs display the not-found page. The active topic page links to its three subpages.
 
 ## 1) Open the project in VS Code
 
@@ -126,21 +125,23 @@ WhereToStart-shell/
 
 ### Topic data
 
-Most of your future page content lives in:
+The topic list and content wiring live in:
 
 ```text
 src/data/topicData.js
 ```
 
-That file currently defines:
+The active topic is selected there with `activeTopicSlugs`. The actual questions, answers, introduction text, and exam image lists live in `src/data/topics/`.
+
+The metadata and shared subpage labels live in `src/data/topicMeta.js`. Together, those files define:
 
 - the 4 topics
 - the 3 subpages per topic
-- placeholder questions for each subpage
+- questions for each subpage
 - model answers and notes
 - topic illustrations and descriptions
 
-So yes: **that file is currently acting as the central content source for the site.**
+To make another topic available, add its slug to `activeTopicSlugs` and review the homepage wheel layout for more cabins.
 
 ### Components
 
@@ -180,4 +181,3 @@ That means:
 - add score summaries or completion badges
 - add better mobile gesture locking if you want a stricter phone experience
 - add MathJax or KaTeX later for nicer maths notation
-

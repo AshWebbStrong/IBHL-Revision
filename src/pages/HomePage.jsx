@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { siteMeta, topics } from '../data/topicData';
+import { readProgress } from '../utils/storage';
+import { countAnswered } from '../utils/quizProgress';
 
 export default function HomePage() {
   const wheelTopics = topics.slice(0, 4);
+  const progress = readProgress();
+  const questionCount = wheelTopics[0]?.subpages.reduce((sum, section) => sum + section.questions.length, 0) ?? 0;
+  const answeredCount = wheelTopics[0]?.subpages.reduce((sum, section) => {
+    const responses = progress[`${wheelTopics[0].slug}/${section.slug}`] ?? {};
+    return sum + countAnswered(section.questions, responses);
+  }, 0) ?? 0;
   const [activeSlug, setActiveSlug] = useState(null);
   const heroRef = useRef(null);
 
@@ -112,6 +120,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+          <p className="homeProgress">Exponentials and logarithms · {answeredCount} / {questionCount} questions answered</p>
         </section>
       </main>
     </div>

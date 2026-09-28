@@ -9,30 +9,28 @@ import {
   readProgress,
   resetRouteProgress,
 } from '../utils/storage';
+import { countAnswered, retryQuestions } from '../utils/quizProgress';
 
 export default function TopicLandingPage() {
   const { topicSlug } = useParams();
   const topic = getTopicBySlug(topicSlug);
   const [progress, setProgress] = useState(() => readProgress());
+  const [saveError, setSaveError] = useState('');
 
   const [selectedStripImage, setSelectedStripImage] = useState(null);
   const [selectedConnectedIndex, setSelectedConnectedIndex] = useState(0);
 
-  if (!topic) {
-    return <NotFoundPage />;
-  }
-
-  const stripImages = topic.imageStripImages ?? [];
+  const stripImages = topic?.imageStripImages ?? [];
 
   const loopingImages = useMemo(() => {
     if (!stripImages.length) return [];
     return [...stripImages, ...stripImages];
   }, [stripImages]);
 
-  const allSubpagesComplete = topic.subpages.every((subpage) => {
+  const allSubpagesComplete = topic?.subpages.every((subpage) => {
     const routeKey = `${topic.slug}/${subpage.slug}`;
     return Boolean(progress?.[routeKey]?.__meta?.completedAt);
-  });
+  }) ?? false;
 
   const selectedImageOptions = selectedStripImage
     ? [selectedStripImage.src, ...(selectedStripImage.connectedImages ?? [])]
@@ -75,13 +73,23 @@ export default function TopicLandingPage() {
   }, [selectedStripImage, hasConnectedImage]);
 
   function handleReset(routeKey) {
-    const next = resetRouteProgress(routeKey);
-    setProgress(next);
+    try {
+      const next = resetRouteProgress(routeKey);
+      setProgress(next);
+      setSaveError('');
+    } catch {
+      setSaveError('Quiz progress could not be reset because browser storage is unavailable or full.');
+    }
   }
 
   function handleManualComplete(routeKey) {
-    const next = markRouteComplete(routeKey);
-    setProgress(next);
+    try {
+      const next = markRouteComplete(routeKey);
+      setProgress(next);
+      setSaveError('');
+    } catch {
+      setSaveError('Completion could not be saved because browser storage is unavailable or full.');
+    }
   }
 
   function openStripImage(image) {
@@ -95,17 +103,13 @@ export default function TopicLandingPage() {
   }
 
 
-  console.log('topic.slug:', topic.slug);
-console.log('subpages:', topic.subpages.map((s) => s.slug));
-console.log('progress:', progress);
-console.log(
-  'expected route keys:',
-  topic.subpages.map((s) => `${topic.slug}/${s.slug}`)
-);
+  if (!topic) return <NotFoundPage />;
+
   return (
     <div className="page topicPage">
       <main className="pageShell">
         <ShellHeader compact />
+        {saveError ? <p className="storageError" role="alert">{saveError}</p> : null}
 
         <section className="topicIntroSection">
           <p className="topicIntro">
@@ -122,23 +126,16 @@ console.log(
           <div className="subpageGrid singleRow">
             {topic.subpages.map((subpage, index) => {
               const routeKey = `${topic.slug}/${subpage.slug}`;
-              const previousSubpage = topic.subpages[index - 1];
-              const previousRouteKey = previousSubpage
-                ? `${topic.slug}/${previousSubpage.slug}`
-                : null;
-
               const routeProgress = progress?.[routeKey] ?? {};
               const isComplete = Boolean(routeProgress?.__meta?.completedAt);
 
-              const responseKeys = Object.keys(routeProgress).filter(
-                (key) => key !== '__meta'
-              );
-              const hasStarted = responseKeys.length > 0 || isComplete;
-              const hasProgress = responseKeys.length > 0 || isComplete;
+              const answeredCount = countAnswered(subpage.questions, routeProgress);
+              const hasStarted = answeredCount > 0 || isComplete;
+              const hasProgress = hasStarted;
 
-              const isLocked =
-                index > 0 &&
-                !Boolean(progress?.[previousRouteKey]?.__meta?.completedAt);
+              const isLocked = topic.subpages.slice(0, index).some((earlierSubpage) =>
+                !progress?.[`${topic.slug}/${earlierSubpage.slug}`]?.__meta?.completedAt,
+              );
 
               return (
                 <SubpageCard
@@ -149,6 +146,9 @@ console.log(
                   isLocked={isLocked}
                   hasProgress={hasProgress}
                   hasStarted={hasStarted}
+                  answeredCount={answeredCount}
+                  questionCount={subpage.questions.length}
+                  revisitCount={retryQuestions(subpage.questions, routeProgress).length}
                   onReset={() => handleReset(routeKey)}
                   onManualComplete={() => handleManualComplete(routeKey)}
                 />

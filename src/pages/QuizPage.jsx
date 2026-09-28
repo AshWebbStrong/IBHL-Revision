@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import ProgressDock from '../components/ProgressDock';
 import QuizSection from '../components/QuizSection';
@@ -7,9 +7,10 @@ import { getSubpage, getTopicBySlug } from '../data/topicData';
 import {
   markRouteComplete,
   readProgress,
-  resetQuestionResponse,
+  saveQuestionAssessment,
   saveQuestionResponse,
 } from '../utils/storage';
+import { countAnswered, firstUnansweredIndex, resumeIndex, retryQuestions } from '../utils/quizProgress';
 
 function isInteractiveElement(target) {
   if (!(target instanceof HTMLElement)) return false;
@@ -21,6 +22,19 @@ function isInteractiveElement(target) {
   );
 }
 
+function isInsideScrollableArea(target) {
+  if (!(target instanceof Element)) return false;
+  let element = target;
+  while (element && !element.classList.contains('quizPage')) {
+    const { overflowY } = window.getComputedStyle(element);
+    if (['auto', 'scroll'].includes(overflowY) && element.scrollHeight > element.clientHeight + 2) {
+      return true;
+    }
+    element = element.parentElement;
+  }
+  return false;
+}
+
 export default function QuizPage() {
   const { topicSlug, subpageSlug } = useParams();
   const topic = getTopicBySlug(topicSlug);
@@ -28,8 +42,10 @@ export default function QuizPage() {
   const routeKey = `${topicSlug}/${subpageSlug}`;
 
   const [progress, setProgress] = useState(() => readProgress());
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(() => resumeIndex(subpage?.questions ?? [], readProgress()[routeKey] ?? {}));
+  const [saveError, setSaveError] = useState('');
   const [enhancedNav, setEnhancedNav] = useState(() => window.innerWidth > 1024);
+  const pageRef = useRef(null);
   const touchStartRef = useRef(null);
   const lockRef = useRef(false);
 
@@ -48,20 +64,26 @@ export default function QuizPage() {
   const isQuestionSlide = currentIndex >= firstQuestionIndex && currentIndex <= questions.length;
   const currentQuestion = isQuestionSlide ? questions[currentIndex - 1] : null;
 
-  const completedCount = questions.filter((question) => Boolean(responses[question.id])).length;
+  const completedCount = countAnswered(questions, responses);
   const allComplete = completedCount === questions.length;
-  const maxUnlockedIndex = allComplete ? outroIndex : completedCount + 1;
+  const firstMissing = firstUnansweredIndex(questions, responses);
+  const maxUnlockedIndex = firstMissing === -1 ? outroIndex : firstMissing + 1;
+  const retryList = retryQuestions(questions, responses);
 
-  const canAdvance = useMemo(() => {
-    if (isIntroSlide) return true;
-    if (!isQuestionSlide) return false;
-    return Boolean(responses[currentQuestion?.id]);
-  }, [isIntroSlide, isQuestionSlide, responses, currentQuestion]);
+  const canAdvance = isIntroSlide || (isQuestionSlide && Boolean(responses[currentQuestion?.id]));
 
   useEffect(() => {
     setProgress(readProgress());
-    setCurrentIndex(0);
+    setCurrentIndex(resumeIndex(questions, readProgress()[routeKey] ?? {}));
+    setSaveError('');
   }, [routeKey]);
+
+  useEffect(() => {
+    if (!enhancedNav) {
+      window.scrollTo(0, 0);
+      if (pageRef.current) pageRef.current.scrollTop = 0;
+    }
+  }, [currentIndex, enhancedNav]);
 
   useEffect(() => {
     function handleResize() {
@@ -84,7 +106,7 @@ export default function QuizPage() {
     function goToIndex(nextIndex) {
       if (lockRef.current) return;
       if (nextIndex < 0 || nextIndex >= totalSlides || nextIndex === currentIndex) return;
-      if (nextIndex > maxUnlockedIndex) return;
+      if (nextIndex > currentIndex && nextIndex > maxUnlockedIndex) return;
 
       lockRef.current = true;
       setCurrentIndex(nextIndex);
@@ -93,6 +115,7 @@ export default function QuizPage() {
 
     function handleWheel(event) {
       if (Math.abs(event.deltaY) < 10) return;
+      if (isInsideScrollableArea(event.target)) return;
       event.preventDefault();
 
       if (event.deltaY > 0) {
@@ -120,6 +143,7 @@ export default function QuizPage() {
     }
 
     function handleTouchStart(event) {
+      if (isInteractiveElement(event.target) || isInsideScrollableArea(event.target)) return;
       touchStartRef.current = event.changedTouches[0].clientY;
     }
 
@@ -156,7 +180,13 @@ export default function QuizPage() {
     if (!allComplete) return;
     if (currentIndex !== outroIndex) return;
 
-    markRouteComplete(routeKey);
+    try {
+      const next = markRouteComplete(routeKey);
+      setProgress(next);
+      setSaveError('');
+    } catch {
+      setSaveError('Your progress could not be saved. Check that browser storage is available and has free space.');
+    }
   }, [allComplete, currentIndex, outroIndex, routeKey]);
 
   if (!topic || !subpage) {
@@ -164,19 +194,29 @@ export default function QuizPage() {
   }
 
   function handleSubmit(questionId, response) {
-    const next = saveQuestionResponse(routeKey, questionId, response);
-    setProgress(next);
+    try {
+      const next = saveQuestionResponse(routeKey, questionId, response);
+      setProgress(next);
+      setSaveError('');
+      return true;
+    } catch {
+      setSaveError('Your answer could not be saved. Check that browser storage is available and has free space.');
+      return false;
+    }
   }
 
-  function handleReset(questionId) {
-    const next = resetQuestionResponse(routeKey, questionId);
-    setProgress(next);
-    const questionIndex = questions.findIndex((question) => question.id === questionId);
-    setCurrentIndex(questionIndex + 1);
+  function handleAssessment(questionId, assessment) {
+    try {
+      const next = saveQuestionAssessment(routeKey, questionId, assessment);
+      setProgress(next);
+      setSaveError('');
+    } catch {
+      setSaveError('Your assessment could not be saved. Check browser storage and try again.');
+    }
   }
 
   function handleJump(index) {
-    if (index <= maxUnlockedIndex) {
+    if (index <= maxUnlockedIndex || (index <= questions.length && responses[questions[index - 1]?.id])) {
       setCurrentIndex(index);
     }
   }
@@ -184,6 +224,7 @@ export default function QuizPage() {
   function handleNext() {
     if (isOutroSlide) return;
     if (isQuestionSlide && !canAdvance) return;
+    if (currentIndex + 1 > maxUnlockedIndex) return;
     setCurrentIndex(Math.min(currentIndex + 1, totalSlides - 1));
   }
 
@@ -193,7 +234,7 @@ export default function QuizPage() {
     return 'Next';
   }
   return (
-    <div className="quizPage" style={{ '--topic-accent': topic.accent }}>
+    <div ref={pageRef} className="quizPage" style={{ '--topic-accent': topic.accent }}>
       <div className="quizTopBar glassCard">
         <div>
           <p className="eyebrow">{topic.title}</p>
@@ -218,12 +259,14 @@ export default function QuizPage() {
             type="button"
             className="primaryButton smallButton"
             onClick={handleNext}
-            disabled={isOutroSlide || (isQuestionSlide && !canAdvance)}
+            disabled={isOutroSlide || (isQuestionSlide && !canAdvance) || currentIndex + 1 > maxUnlockedIndex}
           >
             {getNextLabel()}
           </button>
         </div>
       </div>
+
+      {saveError ? <div className="quizSaveError" role="alert">{saveError}</div> : null}
 
       <ProgressDock
         currentIndex={currentIndex}
@@ -238,7 +281,7 @@ export default function QuizPage() {
           style={{ transform: `translateY(-${currentIndex * 100}vh)` }}
         >
           
-          <section className="quizSlide introSlide">
+          <section className={`quizSlide introSlide ${isIntroSlide ? 'isCurrent' : ''}`}>
             <div className="finalSlideInner glassCard">
               <p className="eyebrow">{intro.eyebrow ?? 'Before you begin'}</p>
               <h2>{intro.title ?? subpage.label}</h2>
@@ -275,7 +318,7 @@ export default function QuizPage() {
                 <button
                   type="button"
                   className="primaryButton"
-                  onClick={() => setCurrentIndex(firstQuestionIndex)}
+                  onClick={() => setCurrentIndex(firstMissing === -1 ? outroIndex : firstMissing + firstQuestionIndex)}
                 >
                   {intro.primaryLabel ?? 'Start section'}
                 </button>
@@ -291,11 +334,12 @@ export default function QuizPage() {
               sectionNumber={index + 1}
               totalSections={questions.length}
               onSubmit={(response) => handleSubmit(question.id, response)}
-              onReset={() => handleReset(question.id)}
+              onAssessment={(assessment) => handleAssessment(question.id, assessment)}
+              isCurrent={currentIndex === index + 1}
             />
           ))}
 
-          <section className="quizSlide finalSlide">
+          <section className={`quizSlide finalSlide ${isOutroSlide ? 'isCurrent' : ''}`}>
             <div className="finalSlideInner glassCard">
               <p className="eyebrow">{outro.eyebrow ?? 'Section complete'}</p>
               <h2>{outro.title ?? `${subpage.label} complete`}</h2>
@@ -303,6 +347,19 @@ export default function QuizPage() {
                 {outro.summary ??
                   `You have completed ${completedCount} out of ${questions.length} questions in this section.`}
               </p>
+
+              <div className="retrySummary">
+                <h3>Questions to revisit ({retryList.length})</h3>
+                {retryList.length ? (
+                  <div className="retryLinks">
+                    {retryList.map((question) => (
+                      <button key={question.id} type="button" className="ghostButton" onClick={() => handleJump(questions.indexOf(question) + 1)}>
+                        Question {questions.indexOf(question) + 1}: {question.title}
+                      </button>
+                    ))}
+                  </div>
+                ) : <p>Mark answers as partly correct or revisit to collect them here.</p>}
+              </div>
 
               {outro.recapItems?.length || outro.tipText ? (
                 <div className="summaryGrid">

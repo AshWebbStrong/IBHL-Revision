@@ -1,7 +1,11 @@
 const STORAGE_KEY = 'whereToStart-progress-v1';
 
 function isBrowser() {
-  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  try {
+    return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  } catch {
+    return false;
+  }
 }
 
 export function readProgress() {
@@ -17,13 +21,8 @@ export function readProgress() {
 }
 
 export function writeProgress(progress) {
-  if (!isBrowser()) return;
-
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  } catch (error) {
-    console.warn('Could not save progress.', error);
-  }
+  if (!isBrowser()) throw new Error('Browser storage is unavailable.');
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
 }
 
 export function saveQuestionResponse(routeKey, questionId, response) {
@@ -35,6 +34,7 @@ export function saveQuestionResponse(routeKey, questionId, response) {
       ...(existing[routeKey] ?? {}),
       [questionId]: {
         ...response,
+        assessment: null,
         savedAt: new Date().toISOString(),
       },
     },
@@ -44,11 +44,30 @@ export function saveQuestionResponse(routeKey, questionId, response) {
   return next;
 }
 
+export function saveQuestionAssessment(routeKey, questionId, assessment) {
+  if (!['correct', 'partly-correct', 'revisit'].includes(assessment)) {
+    throw new Error('Unknown assessment.');
+  }
+  const existing = readProgress();
+  const response = existing[routeKey]?.[questionId];
+  if (!response) throw new Error('Submit a response before assessing it.');
+  const next = {
+    ...existing,
+    [routeKey]: {
+      ...existing[routeKey],
+      [questionId]: { ...response, assessment },
+    },
+  };
+  writeProgress(next);
+  return next;
+}
+
 export function resetQuestionResponse(routeKey, questionId) {
   const existing = readProgress();
   const routeResponses = { ...(existing[routeKey] ?? {}) };
 
   delete routeResponses[questionId];
+  delete routeResponses.__meta;
 
   const next = {
     ...existing,

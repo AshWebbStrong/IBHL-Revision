@@ -1049,3 +1049,71 @@
     font-size: clamp(2.1rem, 12vw, 3.2rem);
   }
 }
+
+.quizSaveError {
+  position: fixed;
+  top: calc(var(--quiz-header-height) + var(--quiz-edge) * 2 + 4px);
+  left: var(--quiz-edge);
+  right: calc(var(--quiz-dock-width) + var(--quiz-edge) * 2);
+  z-index: 20;
+  padding: 9px 12px;
+  border: 1px solid #f39b88;
+  border-radius: 10px;
+  background: #713429;
+  color: #fff;
+}
+
+.assessmentPanel {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.assessmentPanel p { margin: 0 0 10px; }
+
+.assessmentChoices, .retryLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.assessmentButton {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  cursor: pointer;
+}
+
+.assessmentButton.isSelected {
+  border-color: var(--topic-accent);
+  background: color-mix(in srgb, var(--topic-accent) 28%, #222);
+}
+
+.retrySummary {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.retrySummary h3 { margin: 0 0 10px; }
+.retrySummary p { margin: 0; }
+
+.finalSlideInner {
+  max-height: calc(100vh - var(--quiz-slide-top) - var(--quiz-slide-bottom));
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  .quizSlide:not(.isCurrent) { display: none; }
+  .quizSaveError { position: static; margin: 0 16px 16px; }
+  .finalSlideInner { max-height: none; }
+  .progressDots {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 4px;
+  }
+  .progressDot { flex: 0 0 36px; }
+}

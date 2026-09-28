@@ -8,6 +8,9 @@ export default function SubpageCard({
   isLocked = false,
   hasProgress = false,
   hasStarted = false,
+  answeredCount = 0,
+  questionCount = 0,
+  revisitCount = 0,
   onReset,
   onManualComplete,
 }) {
@@ -116,6 +119,10 @@ export default function SubpageCard({
       </div>
 
       <p className="subpageDescription">{subpage.description}</p>
+      <p className="subpageProgress">
+        {answeredCount} / {questionCount} answered
+        {revisitCount > 0 ? ` · ${revisitCount} to revisit` : ''}
+      </p>
 
       {isLocked ? (
         <button

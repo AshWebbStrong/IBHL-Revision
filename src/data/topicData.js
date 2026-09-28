@@ -12,9 +12,6 @@ const questionBanks = {
 };
 
 const introBanks = {
-  'exponentials-and-logarithms': exponentialsTopic.exponentialsIntros,
-  'rational-functions-and-transformations': rationalTopic.rationalIntros,
-  differentiation: differentiationTopic.differentiationIntros,
   integration: integrationTopic.integrationIntros,
 };
 
@@ -32,7 +29,10 @@ const imageBanks = {
   integration: integrationTopic.integrationTopicStripImages,
 };
 
-export const topics = topicDefinitions.map((topic) => ({
+// Keep the other banks intact so they can be made available again later.
+const activeTopicSlugs = new Set(['exponentials-and-logarithms']);
+
+export const topics = topicDefinitions.filter((topic) => activeTopicSlugs.has(topic.slug)).map((topic) => ({
   ...topic,
   imageStripImages: imageBanks[topic.slug] ?? [],
   subpages: subpageDefinitions.map((subpage) => ({

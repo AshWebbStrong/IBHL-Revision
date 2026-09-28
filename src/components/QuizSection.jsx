@@ -65,7 +65,8 @@ export default function QuizSection({
   sectionNumber,
   totalSections,
   onSubmit,
-  onReset,
+  onAssessment,
+  isCurrent,
 }) {
   const initialDraft = useMemo(() => {
     if (savedResponse?.type === 'multiple-choice') {
@@ -91,6 +92,7 @@ export default function QuizSection({
 
   const [draftValue, setDraftValue] = useState(initialDraft);
   const [reviewMode, setReviewMode] = useState('both');
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     setDraftValue(initialDraft);
@@ -100,7 +102,7 @@ export default function QuizSection({
     setReviewMode('both');
   }, [question.id, Boolean(savedResponse)]);
 
-  const isSubmitted = Boolean(savedResponse);
+  const isSubmitted = Boolean(savedResponse) && !editing;
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -122,15 +124,25 @@ export default function QuizSection({
             ? 'Sketch and written response saved'
             : normalizedValue;
 
-    onSubmit({
+    const saved = onSubmit({
       type: question.type,
       value: normalizedValue,
       displayValue,
     });
+    if (saved) setEditing(false);
+  }
+
+  function handlePaperAnswer() {
+    const saved = onSubmit({
+      type: 'paper',
+      value: '',
+      displayValue: 'Completed on paper',
+    });
+    if (saved) setEditing(false);
   }
 
   return (
-    <section className="quizSlide">
+    <section className={`quizSlide ${isCurrent ? 'isCurrent' : ''}`}>
       <div className="quizSlideInner">
         {!isSubmitted ? (
           <QuestionPrompt
@@ -268,6 +280,14 @@ export default function QuizSection({
               <button type="submit" className="primaryButton fullWidthButton">
                 Submit response
               </button>
+              <button type="button" className="ghostButton fullWidthButton" onClick={handlePaperAnswer}>
+                I answered on paper — show solution
+              </button>
+              {editing ? (
+                <button type="button" className="ghostButton fullWidthButton" onClick={() => { setDraftValue(initialDraft); setEditing(false); }}>
+                  Cancel editing
+                </button>
+              ) : null}
             </form>
           ) : (
             <article className="glassCard answerPane studentPane answerPaneFull">
@@ -276,12 +296,32 @@ export default function QuizSection({
                   <h3>Your answer</h3>
                 </div>
 
-                <button type="button" className="ghostButton" onClick={onReset}>
-                  Edit answer
+                <button type="button" className="ghostButton" onClick={() => setEditing(true)}>
+                  {savedResponse.type === 'paper' ? 'Add an answer here' : 'Edit answer'}
                 </button>
               </div>
 
               <StudentResponse response={savedResponse} />
+              <div className="assessmentPanel">
+                <p>How did your answer compare?</p>
+                <div className="assessmentChoices" role="group" aria-label={`Self-assessment for question ${sectionNumber}`}>
+                  {[
+                    ['correct', 'Correct'],
+                    ['partly-correct', 'Partly correct'],
+                    ['revisit', 'Revisit'],
+                  ].map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      className={`assessmentButton ${savedResponse.assessment === value ? 'isSelected' : ''}`}
+                      aria-pressed={savedResponse.assessment === value}
+                      onClick={() => onAssessment(value)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </article>
           )}
         </div>

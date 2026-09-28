@@ -5,6 +5,10 @@ export default function StudentResponse({ response }) {
     return <p className="mutedText">No response saved yet.</p>;
   }
 
+  if (response.type === 'paper') {
+    return <p className="mutedText">You completed this question on paper. Compare it with the model answer, then assess your work below.</p>;
+  }
+
   if (response.type === 'drawing' && response.value) {
     return (
       <img
