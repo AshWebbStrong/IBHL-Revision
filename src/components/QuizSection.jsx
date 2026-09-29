@@ -313,7 +313,7 @@ export default function QuizSection({
                     <button
                       key={value}
                       type="button"
-                      className={`assessmentButton ${savedResponse.assessment === value ? 'isSelected' : ''}`}
+                      className={`assessmentButton status-${value} ${savedResponse.assessment === value ? 'isSelected' : ''}`}
                       aria-pressed={savedResponse.assessment === value}
                       onClick={() => onAssessment(value)}
                     >

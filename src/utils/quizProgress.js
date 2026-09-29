@@ -1,3 +1,25 @@
+export const assessmentLabels = {
+  correct: 'Correct',
+  'partly-correct': 'Partially correct',
+  revisit: 'Revisit',
+  unreflected: 'Unreflected',
+};
+
+export function responseStatus(response) {
+  if (!response) return 'unanswered';
+  return ['correct', 'partly-correct', 'revisit'].includes(response.assessment)
+    ? response.assessment : 'unreflected';
+}
+
+export function assessmentCounts(questions, responses) {
+  const counts = { correct: 0, 'partly-correct': 0, revisit: 0, unreflected: 0 };
+  for (const question of questions) {
+    const status = responseStatus(responses[question.id]);
+    if (status !== 'unanswered') counts[status] += 1;
+  }
+  return counts;
+}
+
 export function firstUnansweredIndex(questions, responses) {
   return questions.findIndex((question) => !responses[question.id]);
 }

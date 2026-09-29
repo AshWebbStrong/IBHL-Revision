@@ -9,7 +9,7 @@ import {
   readProgress,
   resetRouteProgress,
 } from '../utils/storage';
-import { countAnswered, retryQuestions } from '../utils/quizProgress';
+import { countAnswered, assessmentCounts } from '../utils/quizProgress';
 
 export default function TopicLandingPage() {
   const { topicSlug } = useParams();
@@ -148,7 +148,7 @@ export default function TopicLandingPage() {
                   hasStarted={hasStarted}
                   answeredCount={answeredCount}
                   questionCount={subpage.questions.length}
-                  revisitCount={retryQuestions(subpage.questions, routeProgress).length}
+                  assessmentCounts={assessmentCounts(subpage.questions, routeProgress)}
                   onReset={() => handleReset(routeKey)}
                   onManualComplete={() => handleManualComplete(routeKey)}
                 />

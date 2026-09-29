@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
+import { assessmentLabels } from '../utils/quizProgress';
 
 export default function SubpageCard({
   topic,
@@ -10,7 +11,7 @@ export default function SubpageCard({
   hasStarted = false,
   answeredCount = 0,
   questionCount = 0,
-  revisitCount = 0,
+  assessmentCounts = {},
   onReset,
   onManualComplete,
 }) {
@@ -119,10 +120,18 @@ export default function SubpageCard({
       </div>
 
       <p className="subpageDescription">{subpage.description}</p>
+      <div className="subpageProgressRow">
       <p className="subpageProgress">
-        {answeredCount} / {questionCount} answered
-        {revisitCount > 0 ? ` · ${revisitCount} to revisit` : ''}
+        {answeredCount}/{questionCount} answered
       </p>
+      <div className="assessmentCounts" aria-label="Answer reflections">
+        {Object.entries(assessmentLabels).map(([status, label]) => (
+          <span key={status} className={`assessmentCount status-${status}`} title={label} aria-label={`${assessmentCounts[status] ?? 0} ${label}`}>
+            <strong>{assessmentCounts[status] ?? 0}</strong>
+          </span>
+        ))}
+      </div>
+      </div>
 
       {isLocked ? (
         <button

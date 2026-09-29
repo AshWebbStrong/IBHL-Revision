@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import {
+  assessmentCounts,
+  responseStatus,
   countAnswered,
   firstUnansweredIndex,
   resumeIndex,
@@ -31,6 +33,26 @@ function mockStorage({ failWrites = false } = {}) {
 }
 
 const questions = [{ id: 'q1' }, { id: 'q2' }, { id: 'q3' }];
+
+test('reflection counts distinguish unanswered and unreflected and ignore stale questions', () => {
+  const current = [...questions, { id: 'q4' }, { id: 'q5' }];
+  const responses = {
+    q1: { assessment: 'correct' },
+    q2: { assessment: 'partly-correct' },
+    q3: { assessment: 'revisit' },
+    q4: { type: 'paper' },
+    old: { assessment: 'correct' },
+    __meta: { completedAt: 123 },
+  };
+  assert.deepEqual(assessmentCounts(current, responses), {
+    correct: 1, 'partly-correct': 1, revisit: 1, unreflected: 1,
+  });
+  assert.equal(responseStatus(undefined), 'unanswered');
+  assert.equal(responseStatus({}), 'unreflected');
+  assert.equal(responseStatus({ assessment: 'unknown' }), 'unreflected');
+  delete responses.q1.assessment;
+  assert.equal(assessmentCounts(current, responses).unreflected, 2);
+});
 
 test('resume uses the first unanswered question, even with a gap in old progress', () => {
   assert.equal(resumeIndex(questions, {}), 0);

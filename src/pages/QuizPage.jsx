@@ -61,16 +61,12 @@ export default function QuizPage() {
 
   const isIntroSlide = currentIndex === introIndex;
   const isOutroSlide = currentIndex === outroIndex;
-  const isQuestionSlide = currentIndex >= firstQuestionIndex && currentIndex <= questions.length;
-  const currentQuestion = isQuestionSlide ? questions[currentIndex - 1] : null;
 
   const completedCount = countAnswered(questions, responses);
   const allComplete = completedCount === questions.length;
   const firstMissing = firstUnansweredIndex(questions, responses);
-  const maxUnlockedIndex = firstMissing === -1 ? outroIndex : firstMissing + 1;
-  const retryList = retryQuestions(questions, responses);
 
-  const canAdvance = isIntroSlide || (isQuestionSlide && Boolean(responses[currentQuestion?.id]));
+  const retryList = retryQuestions(questions, responses);
 
   useEffect(() => {
     setProgress(readProgress());
@@ -106,7 +102,6 @@ export default function QuizPage() {
     function goToIndex(nextIndex) {
       if (lockRef.current) return;
       if (nextIndex < 0 || nextIndex >= totalSlides || nextIndex === currentIndex) return;
-      if (nextIndex > currentIndex && nextIndex > maxUnlockedIndex) return;
 
       lockRef.current = true;
       setCurrentIndex(nextIndex);
@@ -119,7 +114,7 @@ export default function QuizPage() {
       event.preventDefault();
 
       if (event.deltaY > 0) {
-        if (isQuestionSlide && !canAdvance) return;
+
         goToIndex(Math.min(currentIndex + 1, totalSlides - 1));
       } else {
         goToIndex(Math.max(currentIndex - 1, 0));
@@ -132,7 +127,7 @@ export default function QuizPage() {
 
       if (['ArrowDown', 'PageDown', ' '].includes(event.key)) {
         event.preventDefault();
-        if (isQuestionSlide && !canAdvance) return;
+
         goToIndex(Math.min(currentIndex + 1, totalSlides - 1));
       }
 
@@ -156,7 +151,7 @@ export default function QuizPage() {
       if (Math.abs(delta) < 40) return;
 
       if (delta > 0) {
-        if (isQuestionSlide && !canAdvance) return;
+
         goToIndex(Math.min(currentIndex + 1, totalSlides - 1));
       } else {
         goToIndex(Math.max(currentIndex - 1, 0));
@@ -174,7 +169,7 @@ export default function QuizPage() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [canAdvance, currentIndex, enhancedNav, isQuestionSlide, maxUnlockedIndex, totalSlides]);
+  }, [currentIndex, enhancedNav, totalSlides]);
 
   useEffect(() => {
     if (!allComplete) return;
@@ -216,21 +211,20 @@ export default function QuizPage() {
   }
 
   function handleJump(index) {
-    if (index <= maxUnlockedIndex || (index <= questions.length && responses[questions[index - 1]?.id])) {
+    if (index >= 0 && index < totalSlides) {
       setCurrentIndex(index);
     }
   }
 
   function handleNext() {
     if (isOutroSlide) return;
-    if (isQuestionSlide && !canAdvance) return;
-    if (currentIndex + 1 > maxUnlockedIndex) return;
+
     setCurrentIndex(Math.min(currentIndex + 1, totalSlides - 1));
   }
 
   function getNextLabel() {
     if (isIntroSlide) return intro.primaryLabel ?? 'Start section';
-    if (currentIndex === questions.length && canAdvance) return 'Finish section';
+    if (currentIndex === questions.length) return allComplete ? 'Finish section' : 'View summary';
     return 'Next';
   }
   return (
@@ -259,7 +253,7 @@ export default function QuizPage() {
             type="button"
             className="primaryButton smallButton"
             onClick={handleNext}
-            disabled={isOutroSlide || (isQuestionSlide && !canAdvance) || currentIndex + 1 > maxUnlockedIndex}
+            disabled={isOutroSlide}
           >
             {getNextLabel()}
           </button>
@@ -272,6 +266,8 @@ export default function QuizPage() {
         currentIndex={currentIndex}
         totalSlides={totalSlides}
         completedCount={completedCount}
+        questions={questions}
+        responses={responses}
         onJump={handleJump}
       />
 
@@ -289,7 +285,7 @@ export default function QuizPage() {
                 {intro.summary ?? 
                   `This section contains ${questions.length} question${
                     questions.length === 1 ? '' : 's'
-                  }. Submit each answer to unlock the next one.`}
+                  }. Move freely between questions and return to any you skip.`}
               </p>
 
               {intro.recapItems?.length || intro.tipText ? (
@@ -341,10 +337,10 @@ export default function QuizPage() {
 
           <section className={`quizSlide finalSlide ${isOutroSlide ? 'isCurrent' : ''}`}>
             <div className="finalSlideInner glassCard">
-              <p className="eyebrow">{outro.eyebrow ?? 'Section complete'}</p>
+              <p className="eyebrow">{allComplete ? (outro.eyebrow ?? 'Section complete') : 'Section summary'}</p>
               <h2>{outro.title ?? `${subpage.label} complete`}</h2>
               <p>
-                {outro.summary ??
+                {!allComplete ? `You have answered ${completedCount}/${questions.length} questions. You can return to any unanswered question using the numbered buttons.` : outro.summary ??
                   `You have completed ${completedCount} out of ${questions.length} questions in this section.`}
               </p>
 
